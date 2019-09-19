@@ -51,12 +51,12 @@ public:
 		std::cout << "Construct Child_class" << std::endl;
 	}
 
-	virtual ~Child_class()
+	~Child_class()
 	{
 		std::cout << "Destruct Child_class" << std::endl;
 	}
 
-	virtual void print(BASE* a[]) override
+	void print(BASE* a[]) override
 	{
 		if (typeid(Child_class) == typeid(*a))
 		{
@@ -89,7 +89,7 @@ int main()
 	create(&a);
 	a->init();
 	a->print(&a);
-	del(a);
+	//del(a);
 
 	return 0;
 }
