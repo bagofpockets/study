@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "Karkas.h"
+#include <cmath>
 
 #define MAX_LOADSTRING 100
 
@@ -157,13 +158,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		HDC hdc = BeginPaint(hWnd, &ps);
 
-		MoveToEx(hdc, 100, 100, NULL);
-		LineTo(hdc, 150, 150);
-		MoveToEx(hdc, 150, 150, NULL);
-		LineTo(hdc, 100, 200);
-		MoveToEx(hdc, 100, 200, NULL);
-		LineTo(hdc, 100, 100);
-
+		MoveToEx(hdc, 200, 200, NULL);
+		LineTo(hdc, 600, 600);
+		MoveToEx(hdc, 600, 600, NULL);
+		LineTo(hdc, 54, 646);
+		MoveToEx(hdc, 54, 646, NULL);
+		LineTo(hdc, 200, 200);
+		/*
 		for (x = 0; x < sx; x += sx / 10)
 		{
 			MoveToEx(hdc, x, 0, NULL);
@@ -173,7 +174,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			MoveToEx(hdc, 0, y, NULL);
 			LineTo(hdc, sx, y);
-		}
+		}*/
 		EndPaint(hWnd, &ps);
 		break;
 	}
