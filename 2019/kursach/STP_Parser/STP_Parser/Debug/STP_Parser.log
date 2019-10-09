@@ -1,11 +1,25 @@
 ﻿  STP_Parser.cpp
-C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(26,77): warning C4244:  инициализация: преобразование "unsigned __int64" в "unsigned int", возможна потеря данных
-C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(77,35): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
-C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(78,28): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
-C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(169,24): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
-C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(170,17): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
-C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(188,44): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
-C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(190,23): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
-C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(211,21): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
-C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(213,28): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(58,77): warning C4244:  инициализация: преобразование "unsigned __int64" в "unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(89,78): warning C4244:  инициализация: преобразование "unsigned __int64" в "unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(202,21): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(204,27): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(260,61): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(264,24): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(264,70): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(264,102): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(266,29): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(335,21): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(337,27): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(342,20): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(347,25): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(394,21): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(396,27): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(420,24): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(420,80): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(447,24): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(448,17): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(520,23): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(520,71): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(520,101): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser\STP_Parser.cpp(522,28): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
   STP_Parser.vcxproj -> C:\GitHub\study\2019\kursach\STP_Parser\Debug\STP_Parser.exe

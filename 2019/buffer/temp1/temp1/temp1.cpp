@@ -43,31 +43,67 @@ int main()
     return 0;
 }*/
 
+
+
 int main()
 {
 
-	std::string* buffer(new std::string("\n('',(#697,#709,#721,#733))"));
-	unsigned long long* N_buffer(new unsigned long long(0));
+	std::string buffer("\n('',(0.,-1.,0.))");
+	std::string addbuffer;
+	size_t first_buffer;
+	size_t second_buffer;
+	unsigned long long N_buffer(0);
 
-	buffer->erase(0, 2); // удаляет
-	buffer->pop_back();  // внешние скобки
+	buffer.erase(0, 2); // удаляет
+	buffer.pop_back();  // внешние скобки
 
-	for (size_t j = buffer->find_first_of('#'); j <= buffer->find_last_of('#'); j++)
+	/*buffer->erase(0, buffer->find_first_of('('));
+
+	for (size_t j = buffer->find_first_of('#'); j <= buffer->find_last_of(')'); j++)
 	{
-		if (buffer->at(j) == '#')++* N_buffer;
+		if (buffer->at(j) == '#') ++*N_buffer;
 	}
 
-	buffer->erase(buffer->find_first_of('\''), buffer->find_first_of('(') - buffer->find_first_of('\'') + 1);
-	buffer->pop_back();
+	*addbuffer = buffer->substr(buffer->find_first_of('('), buffer->find_first_of(')') - buffer->find_first_of('('));
 
-	for (int i = 0; i < 4; i++)
+	for (unsigned long long i = 0; i < *N_buffer; i++)
 	{
-		buffer->erase(0, 1);
-		std::cout << std::stoull(buffer->substr(0, buffer->find_first_of(','))) << '\n'<< *N_buffer << std::endl;
-		buffer->erase(0, buffer->find_first_of('#'));
+		addbuffer->erase(0, addbuffer->find_first_of('#'));
+		//std::cout << std::stoull(addbuffer->substr(1, addbuffer->find_first_of(','))) << '\n';
 	}
-	delete buffer;
-	delete N_buffer;
+
+	buffer->erase(0, buffer->find_first_of(')'));
+
+	buffer->erase(0, buffer->find_first_of('#'));
+	*addbuffer = buffer->substr(1, buffer->find_first_of(',') - buffer->find_first_of('#') - 1);
+	//std::cout << *addbuffer << std::endl;
+
+	buffer->erase(0, buffer->find_first_of('#'));
+	buffer->erase(0, buffer->find_first_of(',') + 1);*/
+
+	first_buffer = buffer.find_first_of('\'');
+	second_buffer = buffer.find_last_of('\'') - buffer.find_first_of('\'');
+
+	//buffer = buffer.substr(first_buffer, second_buffer + 1);
+
+	buffer.erase(0, buffer.find_first_of('('));
+
+	first_buffer = buffer.find_first_of('(') + 1;
+	second_buffer = buffer.find_first_of(')') - first_buffer;
+	buffer = buffer.substr(first_buffer, second_buffer);
+
+	second_buffer = buffer.find_first_of(',');
+
+	buffer.erase(0, second_buffer + 1);
+
+	second_buffer = buffer.find_first_of(',');
+
+	buffer.erase(0, second_buffer + 1);
+
+	second_buffer = buffer.find_first_of(',');
+	std::cout << std::stod(buffer.substr(0, second_buffer));
+
+	std::cout << buffer << std::endl;
 
 	return 0;
 }
