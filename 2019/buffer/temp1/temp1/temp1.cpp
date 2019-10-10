@@ -43,7 +43,17 @@ int main()
     return 0;
 }*/
 
-
+class a
+{
+private:
+	const std::string t1 = "1";
+	const std::string t2 = "2";
+public:
+	a() {}
+	a() { std::cout << "1"; }
+	a() { std::cout << "2"; }
+	~a() {}
+};
 
 int main()
 {

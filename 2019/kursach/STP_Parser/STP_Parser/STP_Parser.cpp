@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-/*-----Абстракция структур-----*/
+/*-----Абстракция CARTESIAN_POINT и DIRECTION-----*/
 
 class Support_struct
 {
@@ -14,32 +14,14 @@ class Support_struct
 
 protected:
 	unsigned long long id;
-	std::string smth;
+	std::string smth, type;
 	double x, y, z;
 
 public:
 	Support_struct() : x(0), y(0), z(0), id(0) {}
-	virtual ~Support_struct() {}
+	~Support_struct() {}
 
-	virtual std::string get_type() = 0;
-};
-
-class CARTESIAN_POINT : public Support_struct
-{
-public:
-	CARTESIAN_POINT() {}
-	~CARTESIAN_POINT() {}
-
-	std::string get_type() override { return "CARTESIAN_POINT"; }
-};
-
-class DIRECTION : public Support_struct
-{
-public:
-	DIRECTION() {}
-	~DIRECTION() {}
-
-	std::string get_type() override { return "DIRECTION"; }
+	std::string get_type() { return type; }
 };
 
 /*-----Поверхности и нужное для них-----*/
@@ -117,9 +99,15 @@ private:
 	std::vector<Support_struct*> associated_ids;
 
 public:
-	AXIS2_PLACEMENT_3D() : smth_str(new std::string), id(new unsigned long long) {}
+	AXIS2_PLACEMENT_3D() : smth_str(new std::string), id(new unsigned long long(0)) {}
 	~AXIS2_PLACEMENT_3D()
 	{
+		for (unsigned long long i = 0; i < associated_ids.size(); i++)
+		{
+			delete associated_ids[i];
+			associated_ids[i] = 0;
+		}
+
 		delete smth_str;
 		delete id;
 	}
@@ -187,6 +175,18 @@ private:
 	std::ifstream* input_file;
 	std::vector<input_data*>* data_vec;
 
+	/*-----Вспомогательные функции-----*/
+
+	std::string delete_parentheses(std::string buff)
+	{
+		buff.erase(0, 2); // удаляет
+		buff.pop_back();  // внешние скобки
+
+		return buff;
+	}
+
+	/*---------------------------------*/
+
 	std::vector<CLOSED_SHELL*> CLOSED_SHELL_sorter()
 	{
 		std::vector<CLOSED_SHELL*> CLOSED_SHELL_vec;
@@ -204,8 +204,7 @@ private:
 				buffer = data_vec->at(i)->properties;
 				N_buffer = 0;
 
-				buffer.erase(0, 2); // удаляет
-				buffer.pop_back();  // внешние скобки
+				buffer = delete_parentheses(buffer);
 
 				for (size_t j = buffer.find_first_of('#'); j <= buffer.find_last_of('#'); j++)
 				{
@@ -266,8 +265,7 @@ private:
 						buffer = data_vec->at(k)->properties;
 						N_buffer = 0;
 
-						buffer.erase(0, 2); // удаляет
-						buffer.pop_back();  // внешние скобки
+						buffer = delete_parentheses(buffer);
 
 						for (size_t j = buffer.find_first_of('#'); j <= buffer.find_last_of(')'); j++)
 						{
@@ -324,8 +322,9 @@ private:
 
 	Support_struct* struct_sorter(unsigned long long ID)
 	{
-		Support_struct* support_buff(new CARTESIAN_POINT);
+		Support_struct* support_buff(new Support_struct);
 		std::string buffer;
+		std::string smth_buffer;
 		size_t first_buffer;
 		size_t second_buffer;
 		unsigned long long i(0);
@@ -341,21 +340,20 @@ private:
 
 		if (data_vec->at(i)->type == "CARTESIAN_POINT")
 		{
-			delete support_buff;
-			support_buff = new CARTESIAN_POINT;
+			support_buff->type = "CARTESIAN_POINT";
 		}
 		else if (data_vec->at(i)->type == "DIRECTION")
 		{
-			delete support_buff;
-			support_buff = new DIRECTION;
+			support_buff->type = "DIRECTION";
 		}
+		
+		support_buff->id = data_vec->at(i)->id;;
 
-		buffer.erase(0, 2); // удаляет
-		buffer.pop_back();  // внешние скобки
+		buffer = delete_parentheses(buffer);
 
 		first_buffer = buffer.find_first_of('\'');
 		second_buffer = buffer.find_last_of('\'') - buffer.find_first_of('\'');
-
+		
 		support_buff->smth = buffer.substr(first_buffer, second_buffer + 1);
 
 		buffer.erase(0, buffer.find_first_of('('));
@@ -375,7 +373,7 @@ private:
 		buffer.erase(0, second_buffer + 1);
 
 		second_buffer = buffer.find_first_of(',');
-		support_buff->z = std::stod(buffer.substr(0, second_buffer)); // какая-то хрень с E-16 в 536
+		support_buff->z = std::stod(buffer.substr(0, second_buffer));
 
 		return support_buff;
 	}
@@ -393,10 +391,11 @@ private:
 		{
 			if (data_vec->at(i)->id == ID)
 			{
+				*AXIS2_PLACEMENT_3D_buff.id = i;
+
 				buffer = data_vec->at(i)->properties;
 
-				buffer.erase(0, 2); // удаляет
-				buffer.pop_back();  // внешние скобки
+				buffer = delete_parentheses(buffer);
 
 				for (size_t j = buffer.find_first_of('#'); j <= buffer.find_last_of('#'); j++)
 				{
@@ -410,19 +409,27 @@ private:
 
 				buffer.erase(0, buffer.find_first_of('#'));
 
-				for (unsigned long long i = 0; i < N_buffer; i++)
+				for (unsigned long long j = 0; j < N_buffer; j++)
 				{
 					buffer.erase(0, 1);
 					second_buffer = buffer.find_first_of(',');
 
 					Id_buffer = std::stoull(buffer.substr(0, second_buffer));
 
-					if ((data_vec->at(Id_buffer)->type == "CARTESIAN_POINT") || (data_vec->at(Id_buffer)->type == "DIRECTION"))
+					for (unsigned long long k = 0; k < data_vec->size(); k++)
 					{
-						AXIS2_PLACEMENT_3D_buff.associated_ids.push_back(struct_sorter(Id_buffer));
+						if (data_vec->at(k)->id == Id_buffer)
+						{
+							if ((data_vec->at(k)->type == "CARTESIAN_POINT") || (data_vec->at(k)->type == "DIRECTION"))
+							{
+								AXIS2_PLACEMENT_3D_buff.associated_ids.push_back(struct_sorter(Id_buffer));
+
+								break;
+							}
+						}
 					}
 
-					buffer.erase(0, buffer.find_first_of('#'));
+					if (buffer.find('#') != std::string::npos) buffer.erase(0, buffer.find_first_of('#'));
 				}
 
 				break;
@@ -521,8 +528,7 @@ public:
 				{
 					buffer = data_vec->at(j)->properties;
 
-					buffer.erase(0, 2); // удаляет
-					buffer.pop_back();  // внешние скобки
+					buffer = delete_parentheses(buffer);
 
 					CONICAL_SURFACE_buffer = new CONICAL_SURFACE;
 
@@ -537,7 +543,6 @@ public:
 					second_buffer = buffer.find_first_of(',') - first_buffer;
 
 					Id_buffer = std::stoull(buffer.substr(first_buffer, second_buffer));
-					*CONICAL_SURFACE_buffer->AXIS2_PLACEMENT_3D_data->id = Id_buffer;
 					*CONICAL_SURFACE_buffer->AXIS2_PLACEMENT_3D_data = get_AXIS2_PLACEMENT_3D(Id_buffer);
 
 					buffer.erase(0, buffer.find_first_of(',') + 1);
