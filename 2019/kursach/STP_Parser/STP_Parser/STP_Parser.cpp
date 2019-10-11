@@ -8,21 +8,19 @@
 
 /*-----Абстракция CARTESIAN_POINT и DIRECTION-----*/
 
-class Support_struct
+/*class Support_struct
 {
 	friend class File_handler;
 
 protected:
-	unsigned long long id;
-	std::string smth, type;
-	double x, y, z;
+	
 
 public:
 	Support_struct() : x(0), y(0), z(0), id(0) {}
 	~Support_struct() {}
 
 	std::string get_type() { return type; }
-};
+};*/
 
 /*-----Поверхности и нужное для них-----*/
 
@@ -94,6 +92,13 @@ class AXIS2_PLACEMENT_3D
 	friend class File_handler;
 
 private:
+	struct Support_struct
+	{
+		unsigned long long id;
+		std::string smth, type;
+		double x, y, z;
+	};
+
 	std::string* smth_str;
 	unsigned long long* id;
 	std::vector<Support_struct*> associated_ids;
@@ -102,10 +107,12 @@ public:
 	AXIS2_PLACEMENT_3D() : smth_str(new std::string), id(new unsigned long long(0)) {}
 	~AXIS2_PLACEMENT_3D()
 	{
-		for (unsigned long long i = 0; i < associated_ids.size(); i++)
+		for (size_t i = 0; i < associated_ids.size(); i++)
 		{
 			delete associated_ids[i];
 			associated_ids[i] = 0;
+
+			if (i == associated_ids.size() - 1) break;
 		}
 
 		delete smth_str;
@@ -320,9 +327,9 @@ private:
 		return ADVANCED_FACE_vec;
 	}
 
-	Support_struct* struct_sorter(unsigned long long ID)
+	AXIS2_PLACEMENT_3D::Support_struct* struct_sorter(unsigned long long ID)
 	{
-		Support_struct* support_buff(new Support_struct);
+		AXIS2_PLACEMENT_3D::Support_struct* support_buff(new AXIS2_PLACEMENT_3D::Support_struct);
 		std::string buffer;
 		std::string smth_buffer;
 		size_t first_buffer;
@@ -449,7 +456,7 @@ public:
 	{
 		input_file->close();
 
-		for (unsigned long long i = 0; i < data_vec->size(); i++)
+		for (size_t i = 0; i < data_vec->size(); i++)
 		{
 			delete data_vec->at(i);
 			data_vec->at(i) = 0;
@@ -567,6 +574,7 @@ public:
 	{
 		get_data();
 		std::vector<CONICAL_SURFACE*> vb = CONICAL_SURFACE_sorter();
+		std::vector<ADVANCED_FACE*> va = ADVANCED_FACE_sorter();
 
 		/*for (unsigned long long i = 0; i < data_vec->size(); i++)
 		{
