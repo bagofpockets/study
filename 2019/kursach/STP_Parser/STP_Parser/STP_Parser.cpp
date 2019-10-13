@@ -6,84 +6,28 @@
 #include <string>
 #include <vector>
 
-/*-----Абстракция CARTESIAN_POINT и DIRECTION-----*/
+/*----Вспомогательные классы-----*/
 
-/*class Support_struct
-{
-	friend class File_handler;
-
-protected:
-	
-
-public:
-	Support_struct() : x(0), y(0), z(0), id(0) {}
-	~Support_struct() {}
-
-	std::string get_type() { return type; }
-};*/
-
-/*-----Поверхности и нужное для них-----*/
-
-class CLOSED_SHELL
-{
-	friend class File_handler;
-
-private:
-	std::string* smth;
-	unsigned long long* ids_quantity;
-	unsigned long long* associated_ids;
-
-public:
-	CLOSED_SHELL() : associated_ids(new unsigned long long[0]), ids_quantity(new unsigned long long(0)), smth(new std::string) {}
-	CLOSED_SHELL(unsigned long long N) : associated_ids(new unsigned long long[N]), ids_quantity(new unsigned long long(N)), smth(new std::string) {}
-	virtual ~CLOSED_SHELL()
-	{
-		delete[] associated_ids;
-		delete ids_quantity;
-	}
-
-	virtual unsigned long long get_ids_quantity()
-	{
-		return *ids_quantity;
-	}
-
-	unsigned long long get_associated_id(unsigned long long POS)
-	{
-		return associated_ids[POS];
-	}
-};
-
-class ADVANCED_FACE : public CLOSED_SHELL
+class Support_class //Абстракция CARTESIAN_POINT и DIRECTION
 {
 	friend class File_handler;
 
 private:
 	std::string* smth_str1;
-	std::string* smth_str2;
-	unsigned long long* ids_quantity;
-	unsigned long long* FACE_BOUND_ids;
-	unsigned long long* associated_id;
+	std::string* type;
+	double* x;
+	double* y;
+	double* z;
 
 public:
-	ADVANCED_FACE() : FACE_BOUND_ids(new unsigned long long[0]), ids_quantity(new unsigned long long(0)), associated_id(new unsigned long long), smth_str1(new std::string), smth_str2(new std::string) {}
-	ADVANCED_FACE(unsigned long long N) : FACE_BOUND_ids(new unsigned long long[N]), ids_quantity(new unsigned long long(N)), associated_id(new unsigned long long), smth_str1(new std::string), smth_str2(new std::string) {}
-	virtual ~ADVANCED_FACE()
+	Support_class() : smth_str1(new std::string), type(new std::string), x(new double(0)), y(new double(0)), z(new double(0)) {}
+	~Support_class()
 	{
-		delete[] FACE_BOUND_ids;
-		delete ids_quantity;
-		delete associated_id;
 		delete smth_str1;
-		delete smth_str2;
-	}
-
-	unsigned long long get_ids_quantity() override
-	{
-		return *ids_quantity;
-	}
-
-	unsigned long long get_associated_id()
-	{
-		return *associated_id;
+		delete type;
+		delete x;
+		delete y;
+		delete z;
 	}
 };
 
@@ -92,31 +36,63 @@ class AXIS2_PLACEMENT_3D
 	friend class File_handler;
 
 private:
-	struct Support_struct
-	{
-		unsigned long long id;
-		std::string smth, type;
-		double x, y, z;
-	};
-
-	std::string* smth_str;
-	unsigned long long* id;
-	std::vector<Support_struct*> associated_ids;
+	std::string* smth_str1;
+	std::vector<Support_class*>* associated_ids;
 
 public:
-	AXIS2_PLACEMENT_3D() : smth_str(new std::string), id(new unsigned long long(0)) {}
+	AXIS2_PLACEMENT_3D() : smth_str1(new std::string), associated_ids(new std::vector<Support_class*>) {}
 	~AXIS2_PLACEMENT_3D()
 	{
-		for (size_t i = 0; i < associated_ids.size(); i++)
+		for (size_t i = 0; i < associated_ids->size(); i++)
 		{
-			delete associated_ids[i];
-			associated_ids[i] = 0;
-
-			if (i == associated_ids.size() - 1) break;
+			delete associated_ids->at(i);
+			associated_ids->at(i) = 0;
 		}
 
-		delete smth_str;
-		delete id;
+		delete associated_ids;
+		delete smth_str1;
+	}
+};
+
+/*-----Поверхности-----*/
+
+class CLOSED_SHELL
+{
+	friend class File_handler;
+
+protected:
+	std::string* smth_str1;
+	std::vector<unsigned long long*>* associated_ids;
+
+public:
+	CLOSED_SHELL() : associated_ids(new std::vector<unsigned long long*>), smth_str1(new std::string) {}
+	virtual ~CLOSED_SHELL()
+	{
+		for (size_t i = 0; i < associated_ids->size(); i++)
+		{
+			delete associated_ids->at(i);
+			associated_ids->at(i) = 0;
+		}
+
+		delete associated_ids;
+		delete smth_str1;
+	}
+};
+
+class ADVANCED_FACE : public CLOSED_SHELL
+{
+	friend class File_handler;
+
+private:
+	unsigned long long* associated_id;
+	std::string* smth_str2;
+
+public:
+	ADVANCED_FACE() : associated_id(new unsigned long long(0)), smth_str2(new std::string) {}
+	virtual ~ADVANCED_FACE()
+	{
+		delete associated_id;
+		delete smth_str2;
 	}
 };
 
@@ -125,48 +101,19 @@ class CONICAL_SURFACE : public ADVANCED_FACE
 	friend class File_handler;
 
 private:
-	std::string* smth_str;
 	AXIS2_PLACEMENT_3D* AXIS2_PLACEMENT_3D_data;
-	double* smth1;
-	double* smth2;
+	double* smth_d1;
+	double* smth_d2;
 
 public:
-	CONICAL_SURFACE() : AXIS2_PLACEMENT_3D_data(new AXIS2_PLACEMENT_3D), smth1(new double), smth2(new double), smth_str(new std::string) {}
+	CONICAL_SURFACE() : AXIS2_PLACEMENT_3D_data(new AXIS2_PLACEMENT_3D), smth_d1(new double(0)), smth_d2(new double(0)) {}
 	~CONICAL_SURFACE()
 	{
 		delete AXIS2_PLACEMENT_3D_data;
-		delete smth1;
-		delete smth2;
-		delete smth_str;
+		delete smth_d1;
+		delete smth_d2;
 	}
 };
-
-/*class B_SPLINE_SURFACE : public ADVANCED_FACE, public Support_struct
-{
-	friend class File_handler;
-
-private:
-	CARTESIAN_POINT* CARTESIAN_POINT_buffer;
-
-	std::vector<CARTESIAN_POINT*>* CARTESIAN_POINT_vec;
-
-public:
-	B_SPLINE_SURFACE() : CARTESIAN_POINT_vec(new std::vector<CARTESIAN_POINT*>)
-	{
-		CARTESIAN_POINT_buffer = new CARTESIAN_POINT;
-		CARTESIAN_POINT_vec->push_back(CARTESIAN_POINT_buffer);
-	}
-
-	~B_SPLINE_SURFACE()
-	{
-		for (unsigned long long i = 0; i < CARTESIAN_POINT_vec->size(); i++)
-		{
-			delete CARTESIAN_POINT_vec->at(i);
-			CARTESIAN_POINT_vec->at(i) = 0;
-		}
-		delete CARTESIAN_POINT_vec;
-	}
-};*/
 
 /*-----Работа с файлом-----*/
 
@@ -175,7 +122,7 @@ class File_handler
 private:
 	struct input_data
 	{
-		unsigned long long id;
+		unsigned long long id = 0;
 		std::string type, properties;
 	} *data_buffer;
 
@@ -192,54 +139,182 @@ private:
 		return buff;
 	}
 
-	/*---------------------------------*/
-
-	std::vector<CLOSED_SHELL*> CLOSED_SHELL_sorter()
+	unsigned long long count_sharps(std::string buff)
 	{
-		std::vector<CLOSED_SHELL*> CLOSED_SHELL_vec;
-		std::string buffer;
-		size_t first_buffer;
-		size_t second_buffer;
-		unsigned long long N_buffer;
-		unsigned long long Id_buffer;
-		CLOSED_SHELL* CLOSED_SHELL_buffer;
+		unsigned long long N(0);
 
-		for (unsigned long long i = 0; i < data_vec->size(); i++)
+		for (size_t i = buff.find_first_of('#'); i <= buff.find_last_of('#'); i++)
 		{
-			if (data_vec->at(i)->type == "CLOSED_SHELL")
+			if (buff[i] == '#') N++;
+		}
+
+		return N;
+	}
+
+	std::string get_smth_str_1(std::string buff)
+	{
+		size_t first_buffer(buff.find_first_of('\''));
+		size_t second_buffer(buff.find_last_of('\'') - first_buffer);
+
+		return buff.substr(first_buffer, second_buffer + 1);
+	}
+
+	std::vector<unsigned long long*> get_associated_ids(std::string buff, unsigned long long N)
+	{
+		std::vector<unsigned long long*> associated_ids_buff;
+
+		for (unsigned long long i = 0; i < N; i++)
+		{
+			buff.erase(0, 1);
+			if ((buff.find_first_of('#') == 0) || (buff.find_first_of(',') == 0)) buff.erase(0, 1);
+
+			if (buff.find_first_of(',') != std::string::npos)
 			{
+				size_t first_buffer = buff.find_first_of(',');
+				associated_ids_buff.push_back(new unsigned long long(std::stoull(buff.substr(0, first_buffer))));
+			}
+			else associated_ids_buff.push_back(new unsigned long long(std::stoull(buff)));
+
+			if (buff.find_first_of('#') != std::string::npos) buff.erase(0, buff.find_first_of('#'));
+		}
+
+		return associated_ids_buff;
+	}
+
+	std::string get_parentheses_content(std::string buff)
+	{
+		size_t first_buffer = buff.find_first_of('(');
+		size_t second_buffer = buff.find_first_of(')') - first_buffer;
+		std::string ids_buffer = buff.substr(first_buffer, second_buffer);
+
+		return ids_buffer;
+	}
+
+	Support_class* get_support_object(unsigned long long ID)
+	{
+		Support_class* support_buff(new Support_class);
+		std::string buffer;
+		size_t first_buffer(0);
+		size_t second_buffer(0);
+
+		for (size_t i = 0; i < data_vec->size(); i++)
+		{
+			if (data_vec->at(i)->id == ID)
+			{
+				*support_buff->type = data_vec->at(i)->type;
+
 				buffer = data_vec->at(i)->properties;
-				N_buffer = 0;
 
 				buffer = delete_parentheses(buffer);
 
-				for (size_t j = buffer.find_first_of('#'); j <= buffer.find_last_of('#'); j++)
-				{
-					if (buffer[j] == '#') N_buffer++;
-				}
+				*support_buff->smth_str1 = get_smth_str_1(buffer);
 
-				CLOSED_SHELL_buffer = new CLOSED_SHELL(N_buffer);
+				buffer = get_parentheses_content(buffer);
+				buffer.erase(0, 1);
 
-				first_buffer = buffer.find_first_of('\'');
-				second_buffer = buffer.find_last_of('\'') - first_buffer;
+				second_buffer = buffer.find_first_of(',');
+				*support_buff->x = std::stod(buffer.substr(0, second_buffer));
 
-				*CLOSED_SHELL_buffer->smth = buffer.substr(first_buffer, second_buffer + 1);
+				buffer.erase(0, second_buffer + 1);
 
-				second_buffer = buffer.find_first_of('(') - first_buffer;
+				second_buffer = buffer.find_first_of(',');
+				*support_buff->y = std::stod(buffer.substr(0, second_buffer));
 
-				buffer.erase(first_buffer, second_buffer + 1);
-				buffer.pop_back();
+				buffer.erase(0, second_buffer + 1);
+
+				*support_buff->z = std::stod(buffer);
+
+				break;
+			}
+		}
+
+		return support_buff;
+	}
+
+	AXIS2_PLACEMENT_3D* get_AXIS2_PLACEMENT_3D(unsigned long long ID)
+	{
+		AXIS2_PLACEMENT_3D* AXIS2_PLACEMENT_3D_buff(new AXIS2_PLACEMENT_3D);
+		std::string buffer;
+		size_t first_buffer(0);
+		size_t second_buffer(0);
+		unsigned long long N_buffer(0);
+		unsigned long long Id_buffer(0);
+
+		for (size_t i = 0; i < data_vec->size(); i++)
+		{
+			if (data_vec->at(i)->id == ID)
+			{
+				buffer = data_vec->at(i)->properties;
+
+				buffer = delete_parentheses(buffer);
+
+				N_buffer = count_sharps(buffer);
+
+				*AXIS2_PLACEMENT_3D_buff->smth_str1 = get_smth_str_1(buffer);
+
+				buffer.erase(0, buffer.find_first_of('#'));
 
 				for (unsigned long long j = 0; j < N_buffer; j++)
 				{
 					buffer.erase(0, 1);
 					second_buffer = buffer.find_first_of(',');
+
 					Id_buffer = std::stoull(buffer.substr(0, second_buffer));
 
-					CLOSED_SHELL_buffer->associated_ids[j] = Id_buffer;
+					for (size_t k = 0; k < data_vec->size(); k++)
+					{
+						if (data_vec->at(k)->id == Id_buffer)
+						{
+							if ((data_vec->at(k)->type == "CARTESIAN_POINT") || (data_vec->at(k)->type == "DIRECTION"))
+							{
+								AXIS2_PLACEMENT_3D_buff->associated_ids->push_back(get_support_object(Id_buffer));
 
-					buffer.erase(0, buffer.find_first_of('#'));
+								break;
+							}
+						}
+					}
+
+					if (buffer.find('#') != std::string::npos) buffer.erase(0, buffer.find_first_of('#'));
 				}
+
+				break;
+			}
+		}
+
+		return AXIS2_PLACEMENT_3D_buff;
+	}
+
+	/*-----Сортировщики-----*/
+
+	std::vector<CLOSED_SHELL*> CLOSED_SHELL_sorter()
+	{
+		std::vector<CLOSED_SHELL*> CLOSED_SHELL_vec;
+		std::string buffer;
+		size_t first_buffer(0);
+		size_t second_buffer(0);
+		unsigned long long N_buffer(0);
+		CLOSED_SHELL* CLOSED_SHELL_buffer;
+
+		for (size_t i = 0; i < data_vec->size(); i++)
+		{
+			if (data_vec->at(i)->type == "CLOSED_SHELL")
+			{
+				buffer = data_vec->at(i)->properties;
+				N_buffer = count_sharps(buffer);
+
+				buffer = delete_parentheses(buffer);
+
+				CLOSED_SHELL_buffer = new CLOSED_SHELL;
+
+				*CLOSED_SHELL_buffer->smth_str1 = get_smth_str_1(buffer);
+
+				first_buffer = buffer.find_first_of('\'');
+				second_buffer = buffer.find_first_of('(') - first_buffer;
+
+				buffer.erase(first_buffer, second_buffer + 1);
+				buffer.pop_back();
+
+				*CLOSED_SHELL_buffer->associated_ids = get_associated_ids(buffer, N_buffer);
 
 				CLOSED_SHELL_vec.push_back(CLOSED_SHELL_buffer);
 			}
@@ -255,49 +330,31 @@ private:
 		std::vector<ADVANCED_FACE*> ADVANCED_FACE_vec;
 		std::string buffer;
 		std::string ids_buffer;
-		size_t first_buffer;
-		size_t second_buffer;
-		unsigned long long N_buffer;
-		unsigned long long Id_buffer;
+		size_t first_buffer(0);
+		size_t second_buffer(0);
+		unsigned long long N_buffer(0);
 		ADVANCED_FACE* ADVANCED_FACE_buffer;
 
-		for (unsigned long long i = 0; i < input_CLOSED_SHELL.size(); i++)
+		for (size_t i = 0; i < input_CLOSED_SHELL.size(); i++)
 		{
-			for (unsigned long long j = 0; j < input_CLOSED_SHELL.at(i)->get_ids_quantity(); j++)
+			for (size_t j = 0; j < input_CLOSED_SHELL.at(i)->associated_ids->size(); j++)
 			{
-				for (unsigned long long k = 0; k < data_vec->size(); k++)
+				for (size_t k = 0; k < data_vec->size(); k++)
 				{
-					if ((data_vec->at(k)->type == "ADVANCED_FACE") && (data_vec->at(k)->id == input_CLOSED_SHELL.at(i)->associated_ids[j]))
+					if ((data_vec->at(k)->type == "ADVANCED_FACE") && (data_vec->at(k)->id == *input_CLOSED_SHELL.at(i)->associated_ids->at(j)))
 					{
 						buffer = data_vec->at(k)->properties;
-						N_buffer = 0;
 
 						buffer = delete_parentheses(buffer);
 
-						for (size_t j = buffer.find_first_of('#'); j <= buffer.find_last_of(')'); j++)
-						{
-							if (buffer[j] == '#') N_buffer++;
-						}
+						N_buffer = count_sharps(get_parentheses_content(buffer));
 
-						ADVANCED_FACE_buffer = new ADVANCED_FACE(N_buffer);
+						ADVANCED_FACE_buffer = new ADVANCED_FACE;
 
-						first_buffer = buffer.find_first_of('\'');
-						second_buffer = buffer.find_last_of('\'') - first_buffer;
+						*ADVANCED_FACE_buffer->smth_str1 = get_smth_str_1(buffer);
 
-						*ADVANCED_FACE_buffer->smth_str1 = buffer.substr(first_buffer, second_buffer + 1);
-
-						first_buffer = buffer.find_first_of('(');
-						second_buffer = buffer.find_first_of(')') - first_buffer;
-						ids_buffer = buffer.substr(first_buffer, second_buffer);
-
-						for (unsigned long long i = 0; i < N_buffer; i++)
-						{
-							ids_buffer.erase(0, ids_buffer.find_first_of('#'));
-
-							Id_buffer = std::stoull(ids_buffer.substr(1, ids_buffer.find_first_of(',')));
-
-							ADVANCED_FACE_buffer->FACE_BOUND_ids[i] = Id_buffer;
-						}
+						ids_buffer = get_parentheses_content(buffer);
+						*ADVANCED_FACE_buffer->associated_ids = get_associated_ids(ids_buffer, N_buffer);
 
 						first_buffer = buffer.find_first_of(')');
 						buffer.erase(0, first_buffer);
@@ -319,7 +376,10 @@ private:
 						*ADVANCED_FACE_buffer->smth_str2 = buffer;
 
 						ADVANCED_FACE_vec.push_back(ADVANCED_FACE_buffer);
+
+						break;
 					}
+
 				}
 			}
 		}
@@ -327,127 +387,8 @@ private:
 		return ADVANCED_FACE_vec;
 	}
 
-	AXIS2_PLACEMENT_3D::Support_struct* struct_sorter(unsigned long long ID)
-	{
-		AXIS2_PLACEMENT_3D::Support_struct* support_buff(new AXIS2_PLACEMENT_3D::Support_struct);
-		std::string buffer;
-		std::string smth_buffer;
-		size_t first_buffer;
-		size_t second_buffer;
-		unsigned long long i(0);
-
-		for (i = 0; i < data_vec->size(); i++)
-		{
-			if (data_vec->at(i)->id == ID)
-			{
-				buffer = data_vec->at(i)->properties;
-				break;
-			}
-		}
-
-		if (data_vec->at(i)->type == "CARTESIAN_POINT")
-		{
-			support_buff->type = "CARTESIAN_POINT";
-		}
-		else if (data_vec->at(i)->type == "DIRECTION")
-		{
-			support_buff->type = "DIRECTION";
-		}
-		
-		support_buff->id = data_vec->at(i)->id;;
-
-		buffer = delete_parentheses(buffer);
-
-		first_buffer = buffer.find_first_of('\'');
-		second_buffer = buffer.find_last_of('\'') - buffer.find_first_of('\'');
-		
-		support_buff->smth = buffer.substr(first_buffer, second_buffer + 1);
-
-		buffer.erase(0, buffer.find_first_of('('));
-
-		first_buffer = buffer.find_first_of('(') + 1;
-		second_buffer = buffer.find_first_of(')') - first_buffer;
-		buffer = buffer.substr(first_buffer, second_buffer);
-
-		second_buffer = buffer.find_first_of(',');
-		support_buff->x = std::stod(buffer.substr(0, second_buffer));
-
-		buffer.erase(0, second_buffer + 1);
-
-		second_buffer = buffer.find_first_of(',');
-		support_buff->y = std::stod(buffer.substr(0, second_buffer));
-
-		buffer.erase(0, second_buffer + 1);
-
-		second_buffer = buffer.find_first_of(',');
-		support_buff->z = std::stod(buffer.substr(0, second_buffer));
-
-		return support_buff;
-	}
-
-	AXIS2_PLACEMENT_3D get_AXIS2_PLACEMENT_3D(unsigned long long ID)
-	{
-		AXIS2_PLACEMENT_3D AXIS2_PLACEMENT_3D_buff;
-		std::string buffer;
-		size_t first_buffer;
-		size_t second_buffer;
-		unsigned long long N_buffer(0);
-		unsigned long long Id_buffer(0);
-
-		for (unsigned long long i = 0; i < data_vec->size(); i++)
-		{
-			if (data_vec->at(i)->id == ID)
-			{
-				*AXIS2_PLACEMENT_3D_buff.id = i;
-
-				buffer = data_vec->at(i)->properties;
-
-				buffer = delete_parentheses(buffer);
-
-				for (size_t j = buffer.find_first_of('#'); j <= buffer.find_last_of('#'); j++)
-				{
-					if (buffer[j] == '#') N_buffer++;
-				}
-
-				first_buffer = buffer.find_first_of('\'');
-				second_buffer = buffer.find_last_of('\'') - first_buffer;
-
-				*AXIS2_PLACEMENT_3D_buff.smth_str = buffer.substr(first_buffer, second_buffer + 1);
-
-				buffer.erase(0, buffer.find_first_of('#'));
-
-				for (unsigned long long j = 0; j < N_buffer; j++)
-				{
-					buffer.erase(0, 1);
-					second_buffer = buffer.find_first_of(',');
-
-					Id_buffer = std::stoull(buffer.substr(0, second_buffer));
-
-					for (unsigned long long k = 0; k < data_vec->size(); k++)
-					{
-						if (data_vec->at(k)->id == Id_buffer)
-						{
-							if ((data_vec->at(k)->type == "CARTESIAN_POINT") || (data_vec->at(k)->type == "DIRECTION"))
-							{
-								AXIS2_PLACEMENT_3D_buff.associated_ids.push_back(struct_sorter(Id_buffer));
-
-								break;
-							}
-						}
-					}
-
-					if (buffer.find('#') != std::string::npos) buffer.erase(0, buffer.find_first_of('#'));
-				}
-
-				break;
-			}
-		}
-
-		return AXIS2_PLACEMENT_3D_buff;
-	}
-
 public:
-	File_handler(std::string input_file_name) : input_file(new std::ifstream), data_vec(new std::vector<input_data*>)
+	File_handler(std::string input_file_name) : input_file(new std::ifstream), data_vec(new std::vector<input_data*>), data_buffer(NULL)
 	{
 		input_file->open(input_file_name);
 	}
@@ -522,8 +463,8 @@ public:
 
 		std::vector<CONICAL_SURFACE*> CONICAL_SURFACE_vec;
 		std::string buffer;
-		size_t first_buffer;
-		size_t second_buffer;
+		size_t first_buffer(0);
+		size_t second_buffer(0);
 		unsigned long long Id_buffer(0);
 		CONICAL_SURFACE* CONICAL_SURFACE_buffer;
 
@@ -531,7 +472,7 @@ public:
 		{
 			for (unsigned long long j = 0; j < data_vec->size(); j++)
 			{
-				if ((data_vec->at(j)->type == "CONICAL_SURFACE") && (data_vec->at(j)->id == input_ADVANCED_FACE[i]->get_associated_id()))
+				if ((data_vec->at(j)->type == "CONICAL_SURFACE") && (data_vec->at(j)->id == *input_ADVANCED_FACE[i]->associated_id))
 				{
 					buffer = data_vec->at(j)->properties;
 
@@ -539,10 +480,7 @@ public:
 
 					CONICAL_SURFACE_buffer = new CONICAL_SURFACE;
 
-					first_buffer = buffer.find_first_of('\'');
-					second_buffer = buffer.find_last_of('\'') - first_buffer;
-
-					*CONICAL_SURFACE_buffer->smth_str = buffer.substr(first_buffer, second_buffer + 1);
+					*CONICAL_SURFACE_buffer->smth_str1 = get_smth_str_1(buffer);
 
 					buffer.erase(0, buffer.find_first_of(',') + 1);
 
@@ -550,17 +488,17 @@ public:
 					second_buffer = buffer.find_first_of(',') - first_buffer;
 
 					Id_buffer = std::stoull(buffer.substr(first_buffer, second_buffer));
-					*CONICAL_SURFACE_buffer->AXIS2_PLACEMENT_3D_data = get_AXIS2_PLACEMENT_3D(Id_buffer);
+					CONICAL_SURFACE_buffer->AXIS2_PLACEMENT_3D_data = get_AXIS2_PLACEMENT_3D(Id_buffer);
 
 					buffer.erase(0, buffer.find_first_of(',') + 1);
 					first_buffer = buffer.find_first_of(',');
 
-					*CONICAL_SURFACE_buffer->smth1 = std::stod(buffer.substr(0, first_buffer));
+					*CONICAL_SURFACE_buffer->smth_d1 = std::stod(buffer.substr(0, first_buffer));
 
 					buffer.erase(0, buffer.find_first_of(',') + 1);
 					first_buffer = buffer.find_first_of(',');
 
-					*CONICAL_SURFACE_buffer->smth2 = std::stod(buffer.substr(0, first_buffer));
+					*CONICAL_SURFACE_buffer->smth_d2 = std::stod(buffer.substr(0, first_buffer));
 
 					CONICAL_SURFACE_vec.push_back(CONICAL_SURFACE_buffer);
 				}
@@ -572,23 +510,47 @@ public:
 
 	void print_data()
 	{
+		/*-----Здесь тестируется вывод-----*/
 		get_data();
-		std::vector<CONICAL_SURFACE*> vb = CONICAL_SURFACE_sorter();
-		std::vector<ADVANCED_FACE*> va = ADVANCED_FACE_sorter();
 
-		/*for (unsigned long long i = 0; i < data_vec->size(); i++)
+		//std::vector<CLOSED_SHELL*> va = CLOSED_SHELL_sorter();
+		//std::vector<ADVANCED_FACE*> vb = ADVANCED_FACE_sorter();
+		std::vector<CONICAL_SURFACE*> vc = CONICAL_SURFACE_sorter(); //#538 и #1155
+
+		/*for (size_t i = 0; i < data_vec->size(); i++)
 		{
 			std::cout << "id = " << data_vec->at(i)->id << "\ntype: " << data_vec->at(i)->type << "\nproperties: " << data_vec->at(i)->properties  << std::endl;
 		} //вывод всего файла*/
 
-		/*for (unsigned long long i = 0; i < vb.size(); i++)
+		/*for (size_t i = 0; i < va.size(); i++)
 		{
-			std::cout << *vb.at(i)->smth_str << ' ' << *vb.at(i)->smth1 << ' ' << *vb.at(i)->smth2 << '\n';
-			for (unsigned long long j = 0; j < vb.at(j)->AXIS2_PLACEMENT_3D_data->associated_ids.size(); j++)
+			std::cout << "smth_str1 = " << *va.at(i)->smth_str1 << std::endl;
+			for (unsigned long long j = 0; j < *va.at(i)->ids_quantity; j++)
 			{
-				std::cout << vb.at(0)->AXIS2_PLACEMENT_3D_data->associated_ids[0]->x << ' ' << vb.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids[0]->y << ' ' << vb.at(0)->AXIS2_PLACEMENT_3D_data->associated_ids[0]->z << '\n';
+				std::cout << va.at(i)->associated_ids[j] << " ";
 			}
+			std::cout << std::endl;
 		}*/
+
+		/*for (size_t i = 0; i < vb.size(); i++)
+		{
+			std::cout << *vb.at(i)->smth_str1 << " ";
+			for (size_t j = 0; j < vb.at(i)->associated_ids->size(); j++)
+			{
+				std::cout << *vb.at(i)->associated_ids->at(j) << " ";
+			}
+			std::cout << ", " << *vb.at(i)->associated_id << " " << *vb.at(i)->smth_str2 << std::endl;
+		}*/
+
+		for (size_t i = 0; i < vc.size(); i++)
+		{
+			std::cout << *vc.at(i)->smth_str1 << std::endl;
+			for (size_t j = 0; j < vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->size(); j++)
+			{
+				std::cout << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->type << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->smth_str1 << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->x << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->y << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->z << std::endl;
+			}
+			std::cout << *vc.at(i)->smth_d1 << " " << *vc.at(i)->smth_d2 << std::endl;
+		}
 
 		return;
 	}
@@ -600,5 +562,5 @@ int main()
 
 	a.print_data();
 
-    return 0;
+	return 0;
 }

@@ -45,19 +45,37 @@ int main()
 
 class a
 {
-private:
-	const std::string t1 = "1";
-	const std::string t2 = "2";
+protected:
+	unsigned long long* associated_ids;
+
 public:
-	a() {}
-	a() { std::cout << "1"; }
-	a() { std::cout << "2"; }
-	~a() {}
+	a() : associated_ids(new unsigned long long[NULL]) {}
+	a(unsigned long long N) : associated_ids(new unsigned long long[N]) {}
+	virtual ~a()
+	{
+		delete[] associated_ids;
+	}
+
+	void set(unsigned long long POS, unsigned long long VAL)
+	{
+		associated_ids[POS] = VAL;
+	}
+};
+
+class b : public a
+{
+public:
+	b() {}
+	b(unsigned long long N)
+	{
+		associated_ids = new unsigned long long[N];
+	}
+	~b() {}
 };
 
 int main()
 {
-
+	/*
 	std::string buffer("\n('',(0.,-1.,0.))");
 	std::string addbuffer;
 	size_t first_buffer;
@@ -89,7 +107,7 @@ int main()
 	//std::cout << *addbuffer << std::endl;
 
 	buffer->erase(0, buffer->find_first_of('#'));
-	buffer->erase(0, buffer->find_first_of(',') + 1);*/
+	buffer->erase(0, buffer->find_first_of(',') + 1);
 
 	first_buffer = buffer.find_first_of('\'');
 	second_buffer = buffer.find_last_of('\'') - buffer.find_first_of('\'');
@@ -114,6 +132,17 @@ int main()
 	std::cout << std::stod(buffer.substr(0, second_buffer));
 
 	std::cout << buffer << std::endl;
+	*/
+
+	a t1(1);
+
+	b t2(2);
+
+	t1.set(0, 1);
+
+	t2.set(0, 3);
+
+	t2.set(1, 3);
 
 	return 0;
 }

@@ -1,0 +1,8 @@
+﻿  STP_Parser_tmp.cpp
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser_tmp\STP_Parser_tmp.cpp(197,10): warning C4101:  first_buffer: неиспользованная локальная переменная
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser_tmp\STP_Parser_tmp.cpp(238,10): warning C4101:  first_buffer: неиспользованная локальная переменная
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser_tmp\STP_Parser_tmp.cpp(475,23): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser_tmp\STP_Parser_tmp.cpp(475,71): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser_tmp\STP_Parser_tmp.cpp(475,102): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+C:\GitHub\study\2019\kursach\STP_Parser\STP_Parser_tmp\STP_Parser_tmp.cpp(477,28): warning C4244:  аргумент: преобразование "unsigned __int64" в "const unsigned int", возможна потеря данных
+  STP_Parser_tmp.vcxproj -> C:\GitHub\study\2019\kursach\STP_Parser\Debug\STP_Parser_tmp.exe
