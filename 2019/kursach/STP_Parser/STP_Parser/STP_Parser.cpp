@@ -20,7 +20,7 @@ private:
 	double* z;
 
 public:
-	Support_class() : smth_str1(new std::string), type(new std::string), x(new double(0)), y(new double(0)), z(new double(0)) {}
+	Support_class() : smth_str1(new std::string), type(new std::string), x(new double(NULL)), y(new double(NULL)), z(new double(NULL)) {}
 	~Support_class()
 	{
 		delete smth_str1;
@@ -88,7 +88,7 @@ private:
 	std::string* smth_str2;
 
 public:
-	ADVANCED_FACE() : associated_id(new unsigned long long(0)), smth_str2(new std::string) {}
+	ADVANCED_FACE() : associated_id(new unsigned long long(NULL)), smth_str2(new std::string) {}
 	virtual ~ADVANCED_FACE()
 	{
 		delete associated_id;
@@ -106,12 +106,49 @@ private:
 	double* smth_d2;
 
 public:
-	CONICAL_SURFACE() : AXIS2_PLACEMENT_3D_data(new AXIS2_PLACEMENT_3D), smth_d1(new double(0)), smth_d2(new double(0)) {}
+	CONICAL_SURFACE() : AXIS2_PLACEMENT_3D_data(new AXIS2_PLACEMENT_3D), smth_d1(new double(NULL)), smth_d2(new double(NULL)) {}
 	~CONICAL_SURFACE()
 	{
 		delete AXIS2_PLACEMENT_3D_data;
 		delete smth_d1;
 		delete smth_d2;
+	}
+};
+
+class B_SPLINE_SURFACE : public ADVANCED_FACE
+{
+	friend class File_handler;
+
+private:
+	short int* smth_int1;
+	short int* smth_int2;
+	std::vector<std::vector<Support_class*>*>* associated_support_ids;
+	std::string* smth_str2;
+	std::string* smth_str3;
+	std::string* smth_str4;
+	std::string* smth_str5;
+
+public:
+	B_SPLINE_SURFACE() : smth_int1(new short int(NULL)), smth_int2(new short int(NULL)), associated_support_ids(new std::vector<std::vector<Support_class*>*>), smth_str2(new std::string), smth_str3(new std::string), smth_str4(new std::string), smth_str5(new std::string) {}
+	~B_SPLINE_SURFACE()
+	{
+		delete smth_int1;
+		delete smth_int2;
+		for (size_t i = 0; i < associated_support_ids->size(); i++)
+		{
+			for (size_t j = 0; j < associated_support_ids->at(i)->size(); j++)
+			{
+				delete associated_ids->at(j);
+				associated_ids->at(j) = 0;
+			}
+			delete associated_ids->at(i);
+			associated_ids->at(i) = 0;
+		}
+		delete associated_support_ids;
+		delete smth_str2;
+		delete smth_str3;
+		delete smth_str4;
+		delete smth_str5;
 	}
 };
 
@@ -282,6 +319,18 @@ private:
 		}
 
 		return AXIS2_PLACEMENT_3D_buff;
+	}
+
+	B_SPLINE_SURFACE* get_B_SPLINE_SURFACE(unsigned long long ID)
+	{
+		B_SPLINE_SURFACE* B_SPLINE_SURFACE_buff(new B_SPLINE_SURFACE);
+		std::string buffer;
+		size_t first_buffer(0);
+		size_t second_buffer(0);
+		unsigned long long N_buffer(0);
+		unsigned long long Id_buffer(0);
+
+		return B_SPLINE_SURFACE_buff;
 	}
 
 	/*-----Сортировщики-----*/
@@ -506,6 +555,35 @@ public:
 		}
 
 		return CONICAL_SURFACE_vec;
+	}
+
+	std::vector<B_SPLINE_SURFACE*> B_SPLINE_SURFACE_sorter()
+	{
+		std::vector<ADVANCED_FACE*> input_ADVANCED_FACE = ADVANCED_FACE_sorter();
+
+		std::vector<B_SPLINE_SURFACE*> B_SPLINE_SURFACE_vec;
+		std::string buffer;
+		size_t first_buffer(0);
+		size_t second_buffer(0);
+		unsigned long long Id_buffer(0);
+		B_SPLINE_SURFACE* B_SPLINE_SURFACE_buffer;
+
+		for (unsigned long long i = 0; i < input_ADVANCED_FACE.size(); i++)
+		{
+			for (unsigned long long j = 0; j < data_vec->size(); j++)
+			{
+				if ((data_vec->at(j)->type == "COMPLEX") && (data_vec->at(j)->id == *input_ADVANCED_FACE[i]->associated_id))
+				{
+					buffer = data_vec->at(j)->properties;
+
+					buffer = delete_parentheses(buffer);
+
+					B_SPLINE_SURFACE_buffer = new B_SPLINE_SURFACE;
+				}
+			}
+		}
+
+		return B_SPLINE_SURFACE_vec;
 	}
 
 	void print_data()
