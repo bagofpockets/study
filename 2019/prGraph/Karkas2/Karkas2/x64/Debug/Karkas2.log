@@ -1,0 +1,12 @@
+﻿  Karkas2.cpp
+C:\GitHub\study\2019\prGraph\Karkas2\Karkas2\Karkas2.cpp(188,28): warning C4244:  =: преобразование "double" в "int", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas2\Karkas2\Karkas2.cpp(189,28): warning C4244:  =: преобразование "double" в "int", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas2\Karkas2\Karkas2.cpp(190,34): warning C4244:  аргумент: преобразование "double" в "int", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas2\Karkas2\Karkas2.cpp(190,23): warning C4244:  аргумент: преобразование "double" в "int", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas2\Karkas2\Karkas2.cpp(132,29): warning C4101:  z_scr: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas2\Karkas2\Karkas2.cpp(133,15): warning C4101:  z: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas2\Karkas2\Karkas2.cpp(133,12): warning C4101:  y: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas2\Karkas2\Karkas2.cpp(133,50): warning C4101:  Ky: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas2\Karkas2\Karkas2.cpp(132,12): warning C4101:  n: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas2\Karkas2\Karkas2.cpp(133,46): warning C4101:  Kx: неиспользованная локальная переменная
+  Karkas2.vcxproj -> C:\GitHub\study\2019\prGraph\Karkas2\x64\Debug\Karkas2.exe

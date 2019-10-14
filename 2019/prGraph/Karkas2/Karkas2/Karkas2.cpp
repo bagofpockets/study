@@ -153,7 +153,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 	case WM_CREATE:
 	{
-		hpen2 = CreatePen(PS_SOLID, 2, RGB(0, 255, 255));
+		hpen2 = CreatePen(PS_SOLID, 2, RGB(0, 125, 55));
 		hpen3 = CreatePen(PS_SOLID, 2, RGB(255, 255, 0));
 		hpen = CreatePen(PS_SOLID, 2, RGB(0, 0, 255));
 	}
@@ -182,19 +182,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			LineTo(hdc, a, sy);
 
 			//y = tan x + 3
-			bool flag = true;
-			MoveToEx(hdc, 0, b -= 30, NULL);
-			SelectObject(hdc, hpen3);
-			for (x = -M_PI, x_scr = 0; x < M_PI; x += h)
+			SelectObject(hdc, hpen2);
+			for (x = -M_PI/2, x_scr = 0; x < M_PI/2; x += h)
 			{
 				x_scr = (x + M_PI) * a / M_PI;
-				y_scr = b - b * tan(x);
-				if ((x == -M_PI / 2) || (x == M_PI / 2)) continue; 
-				else LineTo(hdc, x_scr + h, y_scr + h);
+				y_scr = b - b * tan(x) - 3;
+				LineTo(hdc, x_scr + h, y_scr + h);
 				
 				
 			}
 
+			MoveToEx(hdc, 0, b, NULL);
 			/*for (x = -M_PI, x_scr = 0; x < M_PI; x += h)
 			{
 				x_scr = (x + M_PI) * a / M_PI;
@@ -202,7 +200,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				LineTo(hdc, x_scr, y_scr);
 			}*/
 
-			/*SelectObject(hdc, hpen3);
+			/*SelectObject(hdc, hpen2);
 			for (x = -M_PI, x_scr = 0; x < M_PI; x += h)
 			{
 				x_scr = (x + M_PI) * a / M_PI;
