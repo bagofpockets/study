@@ -1,0 +1,8 @@
+﻿  Karkas3.cpp
+C:\GitHub\study\2019\prGraph\Karkas3\Karkas3\Karkas3.cpp(137,6): warning C4101:  a: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas3\Karkas3\Karkas3.cpp(137,9): warning C4101:  b: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas3\Karkas3\Karkas3.cpp(137,12): warning C4101:  x_scr: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas3\Karkas3\Karkas3.cpp(138,9): warning C4101:  x: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas3\Karkas3\Karkas3.cpp(138,12): warning C4101:  h: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas3\Karkas3\Karkas3.cpp(137,19): warning C4101:  y_scr: неиспользованная локальная переменная
+  Karkas3.vcxproj -> C:\GitHub\study\2019\prGraph\Karkas3\Debug\Karkas3.exe

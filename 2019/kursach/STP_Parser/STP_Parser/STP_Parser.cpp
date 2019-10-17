@@ -120,8 +120,8 @@ class B_SPLINE_SURFACE : public ADVANCED_FACE
 	friend class File_handler;
 
 private:
-	short int* smth_int1;
-	short int* smth_int2;
+	int* smth_int1;
+	int* smth_int2;
 	std::vector<std::vector<Support_class*>*>* associated_support_ids;
 	std::string* smth_str2;
 	std::string* smth_str3;
@@ -129,7 +129,7 @@ private:
 	std::string* smth_str5;
 
 public:
-	B_SPLINE_SURFACE() : smth_int1(new short int(NULL)), smth_int2(new short int(NULL)), associated_support_ids(new std::vector<std::vector<Support_class*>*>), smth_str2(new std::string), smth_str3(new std::string), smth_str4(new std::string), smth_str5(new std::string) {}
+	B_SPLINE_SURFACE() : smth_int1(new int(NULL)), smth_int2(new int(NULL)), associated_support_ids(new std::vector<std::vector<Support_class*>*>), smth_str2(new std::string), smth_str3(new std::string), smth_str4(new std::string), smth_str5(new std::string) {}
 	~B_SPLINE_SURFACE()
 	{
 		delete smth_int1;
@@ -321,14 +321,52 @@ private:
 		return AXIS2_PLACEMENT_3D_buff;
 	}
 
-	B_SPLINE_SURFACE* get_B_SPLINE_SURFACE(unsigned long long ID)
+	B_SPLINE_SURFACE* get_B_SPLINE_SURFACE(std::string buff)
 	{
 		B_SPLINE_SURFACE* B_SPLINE_SURFACE_buff(new B_SPLINE_SURFACE);
-		std::string buffer;
+		std::string buffer(buff), sub_buff, ids_buff;
 		size_t first_buffer(0);
 		size_t second_buffer(0);
+		size_t third_buffer(0);
 		unsigned long long N_buffer(0);
 		unsigned long long Id_buffer(0);
+		std::vector<unsigned long long*> associated_ids_buff;
+
+		std::cout << buff << std::endl;
+
+		buffer.erase(0, 1);
+		buffer.pop_back();
+
+		second_buffer = buffer.find_first_of(',');
+		*B_SPLINE_SURFACE_buff->smth_int1 = std::stoi(buffer.substr(0, second_buffer));
+
+		buffer.erase(0, second_buffer + 1);
+
+		second_buffer = buffer.find_first_of(',');
+		*B_SPLINE_SURFACE_buff->smth_int2 = std::stoi(buffer.substr(0, second_buffer));
+
+		buffer.erase(0, second_buffer + 1);
+
+		first_buffer = buffer.find_first_of('(') + 1;
+		second_buffer = buffer.find_last_of(')');
+
+		sub_buff = buffer.substr(first_buffer, second_buffer - first_buffer);
+
+		third_buffer = buffer.find_first_of(')');
+
+		for (size_t i = 0; i < second_buffer; i++)
+		{
+			if (i == third_buffer)
+			{
+				ids_buff = sub_buff.substr(first_buffer, i - first_buffer - 1);
+
+				N_buffer = count_sharps(ids_buff);
+
+				//sub_buff.erase(0, first_buffer);
+				//third_buffer = i + 1;
+				//first_buffer = i + 1;
+			}
+		}
 
 		return B_SPLINE_SURFACE_buff;
 	}
@@ -434,6 +472,68 @@ private:
 		}
 
 		return ADVANCED_FACE_vec;
+	}
+
+	std::vector<input_data*> COMPLEX_sorter(unsigned long long ID)
+	{
+		std::vector<input_data*> COMPLEX_vec;
+		std::string buffer, sub_buff;
+		size_t first_buffer(0);
+		size_t second_buffer(0);
+		input_data* COMPLEX_buff(NULL);
+
+		for (size_t i = 0; i < data_vec->size(); i++)
+		{
+			if (data_vec->at(i)->id == ID)
+			{
+				buffer = data_vec->at(i)->properties;
+
+				buffer = delete_parentheses(buffer);
+				buffer.erase(0, 1);
+
+				if (buffer.find("B_SPLINE_SURFACE") != std::string::npos) while (buffer.find_first_of('\n') != std::string::npos)
+				{
+					if (buffer.find_first_of('\n') == 0) buffer.erase(0, 1);
+					sub_buff = buffer.substr(0, buffer.find_first_of('\n'));
+
+					first_buffer = sub_buff.find_first_of('(');
+					second_buffer = sub_buff.find_last_of(')');
+
+					if (first_buffer != std::string::npos)
+					{
+						if (((first_buffer > sub_buff.find_first_of(')')) || (sub_buff[first_buffer + 1] == '#')) && (COMPLEX_buff != NULL))
+						{
+							if ((sub_buff[second_buffer + 1] == ',')) COMPLEX_buff->properties += sub_buff;
+							else COMPLEX_buff->properties += sub_buff.substr(0, second_buffer + 1);
+						}
+						else
+						{
+							COMPLEX_buff = new input_data;
+
+							if (sub_buff[sub_buff.length()] != ')') COMPLEX_buff->type = sub_buff.substr(0, first_buffer);
+
+							if (second_buffer != std::string::npos)
+							{
+								if (second_buffer != sub_buff.length()) COMPLEX_buff->properties = sub_buff.substr(first_buffer, sub_buff.length() - first_buffer + 1);
+								else COMPLEX_buff->properties = sub_buff.substr(first_buffer, second_buffer - first_buffer + 1);
+							}
+							else COMPLEX_buff->properties = sub_buff;
+
+							COMPLEX_buff->id = ID;
+
+							COMPLEX_vec.push_back(COMPLEX_buff);
+						}
+					}
+					else if (COMPLEX_buff != NULL) COMPLEX_buff->properties += sub_buff.substr(0, second_buffer + 1);
+
+					buffer.erase(0, sub_buff.length());
+				}
+
+			break;
+
+			}
+		}
+		return COMPLEX_vec;
 	}
 
 public:
@@ -560,25 +660,32 @@ public:
 	std::vector<B_SPLINE_SURFACE*> B_SPLINE_SURFACE_sorter()
 	{
 		std::vector<ADVANCED_FACE*> input_ADVANCED_FACE = ADVANCED_FACE_sorter();
+		std::vector<input_data*> input_COMPLEX;
 
 		std::vector<B_SPLINE_SURFACE*> B_SPLINE_SURFACE_vec;
 		std::string buffer;
-		size_t first_buffer(0);
-		size_t second_buffer(0);
-		unsigned long long Id_buffer(0);
-		B_SPLINE_SURFACE* B_SPLINE_SURFACE_buffer;
+		B_SPLINE_SURFACE* B_SPLINE_SURFACE_buff;
 
-		for (unsigned long long i = 0; i < input_ADVANCED_FACE.size(); i++)
+		for (size_t i = 0; i < input_ADVANCED_FACE.size(); i++)
 		{
-			for (unsigned long long j = 0; j < data_vec->size(); j++)
+			for (size_t j = 0; j < data_vec->size(); j++)
 			{
 				if ((data_vec->at(j)->type == "COMPLEX") && (data_vec->at(j)->id == *input_ADVANCED_FACE[i]->associated_id))
 				{
-					buffer = data_vec->at(j)->properties;
+					input_COMPLEX = COMPLEX_sorter(data_vec->at(j)->id);
 
-					buffer = delete_parentheses(buffer);
+					for (size_t k = 0; k < input_COMPLEX.size(); k++)
+					{
+						if (input_COMPLEX[k]->type == "B_SPLINE_SURFACE")
+						{
+							buffer = input_COMPLEX.at(k)->properties;
 
-					B_SPLINE_SURFACE_buffer = new B_SPLINE_SURFACE;
+							B_SPLINE_SURFACE_vec.push_back(get_B_SPLINE_SURFACE(buffer));
+						}
+					}
+
+					break;
+
 				}
 			}
 		}
@@ -593,11 +700,12 @@ public:
 
 		//std::vector<CLOSED_SHELL*> va = CLOSED_SHELL_sorter();
 		//std::vector<ADVANCED_FACE*> vb = ADVANCED_FACE_sorter();
-		std::vector<CONICAL_SURFACE*> vc = CONICAL_SURFACE_sorter(); //#538 и #1155
+		//std::vector<CONICAL_SURFACE*> vc = CONICAL_SURFACE_sorter(); //#538 и #1155
+		std::vector<B_SPLINE_SURFACE*> ve = B_SPLINE_SURFACE_sorter();
 
 		/*for (size_t i = 0; i < data_vec->size(); i++)
 		{
-			std::cout << "id = " << data_vec->at(i)->id << "\ntype: " << data_vec->at(i)->type << "\nproperties: " << data_vec->at(i)->properties  << std::endl;
+			//std::cout << "id = " << data_vec->at(i)->id << "\ntype: " << data_vec->at(i)->type << "\nproperties: " << data_vec->at(i)->properties  << std::endl;
 		} //вывод всего файла*/
 
 		/*for (size_t i = 0; i < va.size(); i++)
@@ -620,7 +728,7 @@ public:
 			std::cout << ", " << *vb.at(i)->associated_id << " " << *vb.at(i)->smth_str2 << std::endl;
 		}*/
 
-		for (size_t i = 0; i < vc.size(); i++)
+		/*for (size_t i = 0; i < vc.size(); i++)
 		{
 			std::cout << *vc.at(i)->smth_str1 << std::endl;
 			for (size_t j = 0; j < vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->size(); j++)
@@ -628,6 +736,19 @@ public:
 				std::cout << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->type << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->smth_str1 << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->x << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->y << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->z << std::endl;
 			}
 			std::cout << *vc.at(i)->smth_d1 << " " << *vc.at(i)->smth_d2 << std::endl;
+		}*/
+
+		for (size_t i = 0; i < data_vec->size(); i++)
+		{
+			if (data_vec->at(i)->type == "COMPLEX")
+			{
+				std::vector<input_data*> vd = COMPLEX_sorter(data_vec->at(i)->id);
+
+				/*for (size_t j = 0; j < vd.size(); j++)
+				{
+					std::cout << "type = " << vd.at(j)->type << "\nproperties = " << vd.at(j)->properties << std::endl;
+				}*/
+			}
 		}
 
 		return;

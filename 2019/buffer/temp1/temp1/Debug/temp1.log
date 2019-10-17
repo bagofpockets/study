@@ -1,4 +1,2 @@
 ﻿  temp1.cpp
-C:\GitHub\study\2019\buffer\temp1\temp1\temp1.cpp(53,66): warning C4244:  инициализация: преобразование "unsigned __int64" в "unsigned int", возможна потеря данных
-C:\GitHub\study\2019\buffer\temp1\temp1\temp1.cpp(71,43): warning C4244:  инициализация: преобразование "unsigned __int64" в "unsigned int", возможна потеря данных
   temp1.vcxproj -> C:\GitHub\study\2019\buffer\temp1\Debug\temp1.exe
