@@ -331,8 +331,7 @@ private:
 		unsigned long long N_buffer(0);
 		unsigned long long Id_buffer(0);
 		std::vector<unsigned long long*> associated_ids_buff;
-
-		std::cout << buff << std::endl;
+		std::vector<Support_class*>* support_class_vec_buff;
 
 		buffer.erase(0, 1);
 		buffer.pop_back();
@@ -352,21 +351,47 @@ private:
 
 		sub_buff = buffer.substr(first_buffer, second_buffer - first_buffer);
 
-		third_buffer = buffer.find_first_of(')');
+		first_buffer = sub_buff.find_first_of('(') + 1;
+		third_buffer = sub_buff.find_first_of(')');
 
-		for (size_t i = 0; i < second_buffer; i++)
+		while (third_buffer != std::string::npos)
 		{
-			if (i == third_buffer)
+			ids_buff = sub_buff.substr(first_buffer, third_buffer - first_buffer);
+			N_buffer = count_sharps(ids_buff);
+			sub_buff.erase(0, third_buffer + 1);
+
+			associated_ids_buff = get_associated_ids(ids_buff, N_buffer);
+
+			support_class_vec_buff = new std::vector<Support_class*>;
+
+			for (size_t i = 0; i < associated_ids_buff.size(); i++)
 			{
-				ids_buff = sub_buff.substr(first_buffer, i - first_buffer - 1);
-
-				N_buffer = count_sharps(ids_buff);
-
-				//sub_buff.erase(0, first_buffer);
-				//third_buffer = i + 1;
-				//first_buffer = i + 1;
+				support_class_vec_buff->push_back(get_support_object(*associated_ids_buff[i]));
 			}
+
+			B_SPLINE_SURFACE_buff->associated_support_ids->push_back(support_class_vec_buff);
+
+			first_buffer = sub_buff.find_first_of('(') + 1;
+			third_buffer = sub_buff.find_first_of(')');
 		}
+
+		buffer.erase(0, second_buffer + 2);
+
+		second_buffer = buffer.find_first_of(',');
+		*B_SPLINE_SURFACE_buff->smth_str2 = buffer.substr(0, second_buffer);
+		buffer.erase(0, second_buffer + 1);
+
+		second_buffer = buffer.find_first_of(',');
+		*B_SPLINE_SURFACE_buff->smth_str3 = buffer.substr(0, second_buffer);
+		buffer.erase(0, second_buffer + 1);
+
+		second_buffer = buffer.find_first_of(',');
+		*B_SPLINE_SURFACE_buff->smth_str4 = buffer.substr(0, second_buffer);
+		buffer.erase(0, second_buffer + 1);
+
+		second_buffer = buffer.find_first_of(',');
+		*B_SPLINE_SURFACE_buff->smth_str5 = buffer.substr(0, second_buffer);
+		buffer.erase(0, second_buffer + 1);
 
 		return B_SPLINE_SURFACE_buff;
 	}
@@ -698,17 +723,13 @@ public:
 		/*-----Здесь тестируется вывод-----*/
 		get_data();
 
-		//std::vector<CLOSED_SHELL*> va = CLOSED_SHELL_sorter();
-		//std::vector<ADVANCED_FACE*> vb = ADVANCED_FACE_sorter();
-		//std::vector<CONICAL_SURFACE*> vc = CONICAL_SURFACE_sorter(); //#538 и #1155
-		std::vector<B_SPLINE_SURFACE*> ve = B_SPLINE_SURFACE_sorter();
-
 		/*for (size_t i = 0; i < data_vec->size(); i++)
 		{
 			//std::cout << "id = " << data_vec->at(i)->id << "\ntype: " << data_vec->at(i)->type << "\nproperties: " << data_vec->at(i)->properties  << std::endl;
 		} //вывод всего файла*/
 
-		/*for (size_t i = 0; i < va.size(); i++)
+		/*std::vector<CLOSED_SHELL*> va = CLOSED_SHELL_sorter();
+		for (size_t i = 0; i < va.size(); i++)
 		{
 			std::cout << "smth_str1 = " << *va.at(i)->smth_str1 << std::endl;
 			for (unsigned long long j = 0; j < *va.at(i)->ids_quantity; j++)
@@ -718,7 +739,8 @@ public:
 			std::cout << std::endl;
 		}*/
 
-		/*for (size_t i = 0; i < vb.size(); i++)
+		/*std::vector<ADVANCED_FACE*> vb = ADVANCED_FACE_sorter();
+		for (size_t i = 0; i < vb.size(); i++)
 		{
 			std::cout << *vb.at(i)->smth_str1 << " ";
 			for (size_t j = 0; j < vb.at(i)->associated_ids->size(); j++)
@@ -728,27 +750,48 @@ public:
 			std::cout << ", " << *vb.at(i)->associated_id << " " << *vb.at(i)->smth_str2 << std::endl;
 		}*/
 
-		/*for (size_t i = 0; i < vc.size(); i++)
-		{
-			std::cout << *vc.at(i)->smth_str1 << std::endl;
-			for (size_t j = 0; j < vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->size(); j++)
-			{
-				std::cout << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->type << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->smth_str1 << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->x << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->y << " " << *vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->z << std::endl;
-			}
-			std::cout << *vc.at(i)->smth_d1 << " " << *vc.at(i)->smth_d2 << std::endl;
-		}*/
-
-		for (size_t i = 0; i < data_vec->size(); i++)
+		/*for (size_t i = 0; i < data_vec->size(); i++)
 		{
 			if (data_vec->at(i)->type == "COMPLEX")
 			{
 				std::vector<input_data*> vd = COMPLEX_sorter(data_vec->at(i)->id);
 
-				/*for (size_t j = 0; j < vd.size(); j++)
+				for (size_t j = 0; j < vd.size(); j++)
 				{
 					std::cout << "type = " << vd.at(j)->type << "\nproperties = " << vd.at(j)->properties << std::endl;
-				}*/
+				}
 			}
+		}*/
+
+		std::vector<CONICAL_SURFACE*> vc = CONICAL_SURFACE_sorter(); //#538 и #1155
+		std::cout << "Conical surfaces:" << std::endl;
+		for (size_t i = 0; i < vc.size(); i++)
+		{
+			std::cout << *vc[i]->smth_str1 << std::endl;
+			for (size_t j = 0; j < vc.at(i)->AXIS2_PLACEMENT_3D_data->associated_ids->size(); j++)
+			{
+				std::cout << *vc[i]->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->type << " " << *vc[i]->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->smth_str1 << " " << *vc[i]->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->x << " " << *vc[i]->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->y << " " << *vc[i]->AXIS2_PLACEMENT_3D_data->associated_ids->at(j)->z << std::endl;
+			}
+			std::cout << *vc[i]->smth_d1 << " " << *vc[i]->smth_d2 << std::endl;
+			std::cout << std::endl;
+		}
+
+		std::vector<B_SPLINE_SURFACE*> ve = B_SPLINE_SURFACE_sorter(); //#975, #1001, #1191 и #2056
+		std::cout << "\nB-spline surfaces:" << std::endl;
+		for (size_t i = 0; i < ve.size(); i++)
+		{
+			std::cout << *ve[i]->smth_int1 << " " << *ve[i]->smth_int2 << std::endl;
+			
+			for (size_t j = 0; j < ve[i]->associated_support_ids->size(); j++)
+			{
+				for (size_t k = 0; k < ve[i]->associated_support_ids->at(j)->size(); k++)
+				{
+					std::cout << *ve[i]->associated_support_ids->at(j)->at(k)->type << " " << *ve[i]->associated_support_ids->at(j)->at(k)->smth_str1 << " " << *ve[i]->associated_support_ids->at(j)->at(k)->x << " " << *ve[i]->associated_support_ids->at(j)->at(k)->y << " " << *ve[i]->associated_support_ids->at(j)->at(k)->z << std::endl;
+				}
+			}
+
+			std::cout << *ve[i]->smth_str2 << " " << *ve[i]->smth_str3 << " " << *ve[i]->smth_str4 << " " << *ve[i]->smth_str5 << std::endl;
+			std::cout << std::endl;
 		}
 
 		return;
