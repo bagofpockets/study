@@ -7,7 +7,6 @@ class ADVANCED_FACE : public CLOSED_SHELL
 	friend class File_handler;
 
 private:
-	unsigned long long* associated_id;
 	std::string* smth_str2;
 
 public:

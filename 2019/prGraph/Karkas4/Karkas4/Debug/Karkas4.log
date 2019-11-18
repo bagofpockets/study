@@ -1,9 +1,9 @@
 ﻿  Karkas4.cpp
-C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(211,76): warning C4244:  =: преобразование "double" в "LONG", возможна потеря данных
-C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(212,76): warning C4244:  =: преобразование "double" в "LONG", возможна потеря данных
-C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(131,6): warning C4101:  a: неиспользованная локальная переменная
-C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(131,9): warning C4101:  b: неиспользованная локальная переменная
-C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(131,12): warning C4101:  x_scr: неиспользованная локальная переменная
-C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(144,9): warning C4101:  x: неиспользованная локальная переменная
-C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(131,19): warning C4101:  y_scr: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(211,76): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(212,76): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(131,6): warning C4101: a: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(131,9): warning C4101: b: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(131,12): warning C4101: x_scr: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(144,9): warning C4101: x: неиспользованная локальная переменная
+C:\GitHub\study\2019\prGraph\Karkas4\Karkas4\Karkas4.cpp(131,19): warning C4101: y_scr: неиспользованная локальная переменная
   Karkas4.vcxproj -> C:\GitHub\study\2019\prGraph\Karkas4\Debug\Karkas4.exe

@@ -13,72 +13,120 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\Surfaces">
+      <UniqueIdentifier>{27275044-da9e-464a-8fb2-c7ef4d0cfe31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Support">
+      <UniqueIdentifier>{cc53b438-2df0-418d-8e0f-9a02b859c6df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Surfaces">
+      <UniqueIdentifier>{528ab192-380d-4d39-8554-9dc466a2239d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Support">
+      <UniqueIdentifier>{a170c03f-0391-4e45-923a-752efa2ac22d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\REPRESENTATION">
+      <UniqueIdentifier>{ae71c798-100f-434f-ba47-41c0a8de0c00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\REPRESENTATION">
+      <UniqueIdentifier>{74fc0361-6211-44cc-8679-ac2dd91cc3c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\File_handler">
+      <UniqueIdentifier>{0988f50d-b6b1-49c7-b4e3-35ed7929b005}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\File_handler">
+      <UniqueIdentifier>{2732e739-71fb-4fac-b009-bd31cc5db01a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Support_class.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="AXIS2_PLACEMENT_3D.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="CLOSED_SHELL.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="ADVANCED_FACE.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="CONICAL_SURFACE.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="B_SPLINE_SURFACE.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="File_handler.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="TOROIDAL_SURFACE.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="CYLINDRICAL_SURFACE.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="SPHERICAL_SURFACE.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="ADVANCED_FACE.cpp">
+      <Filter>Исходные файлы\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="B_SPLINE_SURFACE.cpp">
+      <Filter>Исходные файлы\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="CLOSED_SHELL.cpp">
+      <Filter>Исходные файлы\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="CONICAL_SURFACE.cpp">
+      <Filter>Исходные файлы\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="CYLINDRICAL_SURFACE.cpp">
+      <Filter>Исходные файлы\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="SPHERICAL_SURFACE.cpp">
+      <Filter>Исходные файлы\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="TOROIDAL_SURFACE.cpp">
+      <Filter>Исходные файлы\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="AXIS2_PLACEMENT_3D.cpp">
+      <Filter>Исходные файлы\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="Support_class.cpp">
+      <Filter>Исходные файлы\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="Secondary_funcs.cpp">
+      <Filter>Исходные файлы\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="MANIFOLD_SOLID_BREP.cpp">
+      <Filter>Исходные файлы\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="REPRESENTATION_RELATIONSHIP.cpp">
+      <Filter>Исходные файлы\REPRESENTATION</Filter>
+    </ClCompile>
+    <ClCompile Include="ADVANCED_BREP_SHAPE_REPRESENTATION.cpp">
+      <Filter>Исходные файлы\REPRESENTATION</Filter>
+    </ClCompile>
+    <ClCompile Include="File_handler.cpp">
+      <Filter>Исходные файлы\File_handler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AXIS2_PLACEMENT_3D.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Support_class.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="CLOSED_SHELL.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="ADVANCED_FACE.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="CONICAL_SURFACE.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Surfaces</Filter>
     </ClInclude>
     <ClInclude Include="B_SPLINE_SURFACE.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Surfaces</Filter>
     </ClInclude>
-    <ClInclude Include="File_handler.h">
-      <Filter>Файлы заголовков</Filter>
+    <ClInclude Include="CLOSED_SHELL.h">
+      <Filter>Файлы заголовков\Surfaces</Filter>
     </ClInclude>
-    <ClInclude Include="TOROIDAL_SURFACE.h">
-      <Filter>Файлы заголовков</Filter>
+    <ClInclude Include="CONICAL_SURFACE.h">
+      <Filter>Файлы заголовков\Surfaces</Filter>
     </ClInclude>
     <ClInclude Include="CYLINDRICAL_SURFACE.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Surfaces</Filter>
     </ClInclude>
     <ClInclude Include="SPHERICAL_SURFACE.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="TOROIDAL_SURFACE.h">
+      <Filter>Файлы заголовков\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Support_class.h">
+      <Filter>Файлы заголовков\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="AXIS2_PLACEMENT_3D.h">
+      <Filter>Файлы заголовков\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="Secondary_funcs.h">
+      <Filter>Файлы заголовков\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="MANIFOLD_SOLID_BREP.h">
+      <Filter>Файлы заголовков\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="REPRESENTATION_RELATIONSHIP.h">
+      <Filter>Файлы заголовков\REPRESENTATION</Filter>
+    </ClInclude>
+    <ClInclude Include="ADVANCED_BREP_SHAPE_REPRESENTATION.h">
+      <Filter>Файлы заголовков\REPRESENTATION</Filter>
+    </ClInclude>
+    <ClInclude Include="File_handler.h">
+      <Filter>Файлы заголовков\File_handler</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

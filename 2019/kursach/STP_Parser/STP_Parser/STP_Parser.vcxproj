@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ADVANCED_BREP_SHAPE_REPRESENTATION.cpp" />
     <ClCompile Include="ADVANCED_FACE.cpp" />
     <ClCompile Include="AXIS2_PLACEMENT_3D.cpp" />
     <ClCompile Include="B_SPLINE_SURFACE.cpp" />
@@ -158,12 +159,16 @@
     <ClCompile Include="CONICAL_SURFACE.cpp" />
     <ClCompile Include="CYLINDRICAL_SURFACE.cpp" />
     <ClCompile Include="File_handler.cpp" />
+    <ClCompile Include="MANIFOLD_SOLID_BREP.cpp" />
+    <ClCompile Include="REPRESENTATION_RELATIONSHIP.cpp" />
+    <ClCompile Include="Secondary_funcs.cpp" />
     <ClCompile Include="SPHERICAL_SURFACE.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Support_class.cpp" />
     <ClCompile Include="TOROIDAL_SURFACE.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ADVANCED_BREP_SHAPE_REPRESENTATION.h" />
     <ClInclude Include="ADVANCED_FACE.h" />
     <ClInclude Include="AXIS2_PLACEMENT_3D.h" />
     <ClInclude Include="B_SPLINE_SURFACE.h" />
@@ -171,6 +176,9 @@
     <ClInclude Include="CONICAL_SURFACE.h" />
     <ClInclude Include="CYLINDRICAL_SURFACE.h" />
     <ClInclude Include="File_handler.h" />
+    <ClInclude Include="MANIFOLD_SOLID_BREP.h" />
+    <ClInclude Include="REPRESENTATION_RELATIONSHIP.h" />
+    <ClInclude Include="Secondary_funcs.h" />
     <ClInclude Include="SPHERICAL_SURFACE.h" />
     <ClInclude Include="Support_class.h" />
     <ClInclude Include="TOROIDAL_SURFACE.h" />
