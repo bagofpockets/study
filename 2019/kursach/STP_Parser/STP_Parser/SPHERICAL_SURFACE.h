@@ -5,7 +5,8 @@
 #define SPHERICAL_SURFACE_H
 class SPHERICAL_SURFACE : public ADVANCED_FACE
 {
-	friend class File_handler;
+	friend class Data_handler;
+	friend class Model;
 
 private:
 	AXIS2_PLACEMENT_3D* AXIS2_PLACEMENT_3D_data;

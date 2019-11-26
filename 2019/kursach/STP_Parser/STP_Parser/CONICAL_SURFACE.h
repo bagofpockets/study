@@ -5,7 +5,8 @@
 #define CONICAL_SURFACE_H
 class CONICAL_SURFACE : public ADVANCED_FACE
 {
-	friend class File_handler;
+	friend class Data_handler;
+	friend class Model;
 
 private:
 	AXIS2_PLACEMENT_3D* AXIS2_PLACEMENT_3D_data;

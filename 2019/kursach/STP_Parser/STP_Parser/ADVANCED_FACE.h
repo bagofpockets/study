@@ -4,7 +4,7 @@
 #define ADVANCED_FACE_H
 class ADVANCED_FACE : public CLOSED_SHELL
 {
-	friend class File_handler;
+	friend class Data_handler;
 
 private:
 	std::string* smth_str2;

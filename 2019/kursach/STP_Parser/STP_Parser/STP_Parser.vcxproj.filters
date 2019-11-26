@@ -31,10 +31,16 @@
     <Filter Include="Исходные файлы\REPRESENTATION">
       <UniqueIdentifier>{74fc0361-6211-44cc-8679-ac2dd91cc3c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Исходные файлы\File_handler">
+    <Filter Include="Исходные файлы\Handlers">
       <UniqueIdentifier>{0988f50d-b6b1-49c7-b4e3-35ed7929b005}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\File_handler">
+    <Filter Include="Исходные файлы\Handlers\File_handler">
+      <UniqueIdentifier>{10eace4a-3f33-40bc-891a-349af7396236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Handlers">
+      <UniqueIdentifier>{ad6598e0-3c88-4b72-a2c7-a434335a44a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Handlers\File_handler">
       <UniqueIdentifier>{2732e739-71fb-4fac-b009-bd31cc5db01a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -55,9 +61,6 @@
       <Filter>Исходные файлы\Surfaces</Filter>
     </ClCompile>
     <ClCompile Include="CYLINDRICAL_SURFACE.cpp">
-      <Filter>Исходные файлы\Surfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="SPHERICAL_SURFACE.cpp">
       <Filter>Исходные файлы\Surfaces</Filter>
     </ClCompile>
     <ClCompile Include="TOROIDAL_SURFACE.cpp">
@@ -81,8 +84,17 @@
     <ClCompile Include="ADVANCED_BREP_SHAPE_REPRESENTATION.cpp">
       <Filter>Исходные файлы\REPRESENTATION</Filter>
     </ClCompile>
+    <ClCompile Include="SPHERICAL_SURFACE.cpp">
+      <Filter>Исходные файлы\Surfaces</Filter>
+    </ClCompile>
     <ClCompile Include="File_handler.cpp">
-      <Filter>Исходные файлы\File_handler</Filter>
+      <Filter>Исходные файлы\Handlers\File_handler</Filter>
+    </ClCompile>
+    <ClCompile Include="Data_handler.cpp">
+      <Filter>Исходные файлы\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +138,13 @@
       <Filter>Файлы заголовков\REPRESENTATION</Filter>
     </ClInclude>
     <ClInclude Include="File_handler.h">
-      <Filter>Файлы заголовков\File_handler</Filter>
+      <Filter>Файлы заголовков\Handlers\File_handler</Filter>
+    </ClInclude>
+    <ClInclude Include="Data_handler.h">
+      <Filter>Файлы заголовков\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

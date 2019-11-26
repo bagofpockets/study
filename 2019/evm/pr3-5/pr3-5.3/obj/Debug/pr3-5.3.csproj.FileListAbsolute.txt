@@ -1,0 +1,6 @@
+C:\GitHub\study\2019\evm\pr3-5\pr3-5.3\bin\Debug\pr3-5.3.exe.config
+C:\GitHub\study\2019\evm\pr3-5\pr3-5.3\bin\Debug\pr3-5.3.exe
+C:\GitHub\study\2019\evm\pr3-5\pr3-5.3\bin\Debug\pr3-5.3.pdb
+C:\GitHub\study\2019\evm\pr3-5\pr3-5.3\obj\Debug\pr3-5.3.csprojAssemblyReference.cache
+C:\GitHub\study\2019\evm\pr3-5\pr3-5.3\obj\Debug\pr3-5.3.exe
+C:\GitHub\study\2019\evm\pr3-5\pr3-5.3\obj\Debug\pr3-5.3.pdb

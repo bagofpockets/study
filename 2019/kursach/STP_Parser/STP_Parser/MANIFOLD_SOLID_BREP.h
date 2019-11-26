@@ -5,7 +5,8 @@
 #define MANIFOLD_SOLID_BREP_H
 class MANIFOLD_SOLID_BREP
 {
-	friend class File_handler;
+	friend class Data_handler;
+	friend class Model;
 
 protected:
 	std::string* smth_str1;

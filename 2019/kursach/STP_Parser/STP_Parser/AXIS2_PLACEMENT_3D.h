@@ -6,7 +6,8 @@
 #define AXIS2_PLACEMENT_3D_H
 class AXIS2_PLACEMENT_3D
 {
-	friend class File_handler;
+	friend class Data_handler;
+	friend class Model;
 
 private:
 	std::string* smth_str1;

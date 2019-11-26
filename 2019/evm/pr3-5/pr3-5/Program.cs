@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace pr3_5._1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            const double Q = 9;
+            int K, N;
+            double P = 1;
+            Console.Write("Строки: ");
+            K = Convert.ToInt32(Console.ReadLine()) + 1;
+            Console.Write("Столбцы: ");
+            N = Convert.ToInt32(Console.ReadLine()) + 1;
+
+            double[] arr = new double[K];
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            for (int i = 1; i < K; i++)
+            {
+                arr[i] = Math.Sqrt((Q * i) / 100000000);
+                //Console.Write("{0}\t", arr[i]);
+                //Console.WriteLine();
+                P *= N * arr[i];
+            };
+
+            watch.Stop();
+
+            Console.Write("{0}\n", "П = " + P * 100000000);
+            Console.Write("{0}\n", "Время " + watch.ElapsedTicks.ToString());
+            Console.Read();
+        }
+    }
+}

@@ -5,7 +5,8 @@
 #define ADVANCED_BREP_SHAPE_REPRESENTATION_H
 class ADVANCED_BREP_SHAPE_REPRESENTATION
 {
-	friend class File_handler;
+	friend class Data_handler;
+	friend class Model;
 
 private:
 	std::string* smth_str1;

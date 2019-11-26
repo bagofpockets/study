@@ -5,7 +5,8 @@
 #define B_SPLINE_SURFACE_H
 class B_SPLINE_SURFACE : public ADVANCED_FACE
 {
-	friend class File_handler;
+	friend class Data_handler;
+	friend class Model;
 
 private:
 	int* smth_int1;
@@ -21,4 +22,3 @@ public:
 	~B_SPLINE_SURFACE();
 };
 #endif
-

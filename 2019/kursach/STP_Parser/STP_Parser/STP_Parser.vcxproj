@@ -158,11 +158,16 @@
     <ClCompile Include="CLOSED_SHELL.cpp" />
     <ClCompile Include="CONICAL_SURFACE.cpp" />
     <ClCompile Include="CYLINDRICAL_SURFACE.cpp" />
+    <ClCompile Include="Data_handler.cpp" />
     <ClCompile Include="File_handler.cpp" />
     <ClCompile Include="MANIFOLD_SOLID_BREP.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="REPRESENTATION_RELATIONSHIP.cpp" />
     <ClCompile Include="Secondary_funcs.cpp" />
-    <ClCompile Include="SPHERICAL_SURFACE.cpp" />
+    <ClCompile Include="SPHERICAL_SURFACE.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Support_class.cpp" />
     <ClCompile Include="TOROIDAL_SURFACE.cpp" />
@@ -175,11 +180,16 @@
     <ClInclude Include="CLOSED_SHELL.h" />
     <ClInclude Include="CONICAL_SURFACE.h" />
     <ClInclude Include="CYLINDRICAL_SURFACE.h" />
+    <ClInclude Include="Data_handler.h" />
     <ClInclude Include="File_handler.h" />
     <ClInclude Include="MANIFOLD_SOLID_BREP.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="REPRESENTATION_RELATIONSHIP.h" />
     <ClInclude Include="Secondary_funcs.h" />
-    <ClInclude Include="SPHERICAL_SURFACE.h" />
+    <ClInclude Include="SPHERICAL_SURFACE.h">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </DeploymentContent>
+    </ClInclude>
     <ClInclude Include="Support_class.h" />
     <ClInclude Include="TOROIDAL_SURFACE.h" />
   </ItemGroup>
