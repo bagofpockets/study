@@ -5,10 +5,10 @@
 class Model : public Data_handler
 {
 private:
-	std::map<unsigned long long*, CONICAL_SURFACE*>* CONICAL_SURFACE_map;
-	std::map<unsigned long long*, SPHERICAL_SURFACE*>* SPHERICAL_SURFACE_map;
-	std::map<unsigned long long*, CYLINDRICAL_SURFACE*>* CYLINDRICAL_SURFACE_map;
-	std::map<unsigned long long*, TOROIDAL_SURFACE*>* TOROIDAL_SURFACE_map;
+	std::map<unsigned long long*, std::vector<CONICAL_SURFACE*>*>* CONICAL_SURFACE_map;
+	std::map<unsigned long long*, std::vector<SPHERICAL_SURFACE*>*>* SPHERICAL_SURFACE_map;
+	std::map<unsigned long long*, std::vector<CYLINDRICAL_SURFACE*>*>* CYLINDRICAL_SURFACE_map;
+	std::map<unsigned long long*, std::vector<TOROIDAL_SURFACE*>*>* TOROIDAL_SURFACE_map;
 	std::map<unsigned long long*, B_SPLINE_SURFACE*>* B_SPLINE_SURFACE_map;
 
 	bool has_B_SPLINE_SURFACE(unsigned long long* ID);
@@ -21,15 +21,15 @@ private:
 		"B_SPLINE_SURFACE" });
 
 	template <class SURFACE>
-	std::map<unsigned long long*, SURFACE*>* additional_SURFACEs(unsigned long long* self_id, SURFACE* SURFACE_buffer);
+	std::vector<SURFACE*>* additional_SURFACEs(unsigned long long* self_id, SURFACE* SURFACE_buffer);
 
 	template <class SURFACE>
-	std::map<unsigned long long*, SURFACE*>* SURFACE_sorter();
+	std::map<unsigned long long*, std::vector<SURFACE*>*>* SURFACE_sorter();
 
 	std::map<unsigned long long*, B_SPLINE_SURFACE*>* B_SPLINE_SURFACE_sorter();
 
 	template <class SURFACE>
-	void print_SURFACE(std::map<unsigned long long*, SURFACE*> V);
+	void print_SURFACE(std::map<unsigned long long*, std::vector<SURFACE*>*>* V);
 
 public:
 	Model(std::string input_file_name);

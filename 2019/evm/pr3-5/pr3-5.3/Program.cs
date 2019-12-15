@@ -26,7 +26,7 @@ namespace pr3_5._3
             {
                 for (int i = 1; i < (K) / 2; i++)
                 {
-                    arr[i] = Math.Sqrt((Q * i) / 100000000);
+                    arr[i] = Math.Sqrt((Q * i) / 100);
                     //Console.Write("{0}\t", arr[i]);
                     //Console.WriteLine();
                     P *= N * arr[i];
@@ -39,7 +39,7 @@ namespace pr3_5._3
             {
                 for (int i = K / 2; i < K ; i++)
                 {
-                    arr[i] = Math.Sqrt((Q * i) / 100000000);
+                    arr[i] = Math.Sqrt((Q * i) / 100);
                     //Console.Write("{0}\t", arr[i]);
                     //Console.WriteLine();
                     P *= N * arr[i];

@@ -23,7 +23,7 @@ namespace pr3_5._1
 
             for (int i = 1; i < K; i++)
             {
-                arr[i] = Math.Sqrt((Q * i) / 100000000);
+                arr[i] = Math.Sqrt((Q * i) / 100);
                 //Console.Write("{0}\t", arr[i]);
                 //Console.WriteLine();
                 P *= N * arr[i];
@@ -31,7 +31,7 @@ namespace pr3_5._1
 
             watch.Stop();
 
-            Console.Write("{0}\n", "П = " + P * 100000000);
+            Console.Write("{0}\n", "П = " + P);
             Console.Write("{0}\n", "Время " + watch.ElapsedTicks.ToString());
             Console.Read();
         }

@@ -43,6 +43,12 @@
     <Filter Include="Файлы заголовков\Handlers\File_handler">
       <UniqueIdentifier>{2732e739-71fb-4fac-b009-bd31cc5db01a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Handlers\Data_handler">
+      <UniqueIdentifier>{f87be976-6a19-4fe6-81c8-36528c8a4ec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Handlers\Data_handler">
+      <UniqueIdentifier>{4e4b3b6c-5fa2-455a-abc5-426a72d62a9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -90,11 +96,11 @@
     <ClCompile Include="File_handler.cpp">
       <Filter>Исходные файлы\Handlers\File_handler</Filter>
     </ClCompile>
-    <ClCompile Include="Data_handler.cpp">
-      <Filter>Исходные файлы\Handlers</Filter>
-    </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Data_handler.cpp">
+      <Filter>Исходные файлы\Handlers\Data_handler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,11 +146,11 @@
     <ClInclude Include="File_handler.h">
       <Filter>Файлы заголовков\Handlers\File_handler</Filter>
     </ClInclude>
-    <ClInclude Include="Data_handler.h">
-      <Filter>Файлы заголовков\Handlers</Filter>
-    </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Data_handler.h">
+      <Filter>Файлы заголовков\Handlers\Data_handler</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

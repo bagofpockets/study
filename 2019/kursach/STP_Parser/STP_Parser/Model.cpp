@@ -90,55 +90,61 @@ std::map<unsigned long long, bool>* Model::has_SURFACE(std::string SURFACE, std:
 }
 
 template <class SURFACE>
-std::map<unsigned long long*, SURFACE*>* Model::additional_SURFACEs(unsigned long long* self_id, SURFACE* SURFACE_buffer)
+std::vector<SURFACE*>* Model::additional_SURFACEs(unsigned long long* self_id, SURFACE* SURFACE_buffer)
 {
-	std::map<unsigned long long*, SURFACE*>* SURFACE_vec(new std::map<unsigned long long*, SURFACE*>);
+	std::vector<SURFACE*>* SURFACE_vec(new std::vector<SURFACE*>);
 	std::string SURFACE_name(typeid(SURFACE).name());
 	SURFACE_name = SURFACE_name.erase(0, 6);
 
-	std::vector<REPRESENTATION_RELATIONSHIP*>* REPRESENTATION_RELATIONSHIP_vec(REPRESENTATION_RELATIONSHIP_sorter());
-	std::map<unsigned long long*, ADVANCED_BREP_SHAPE_REPRESENTATION*>* ADVANCED_BREP_SHAPE_REPRESENTATION_map(ADVANCED_BREP_SHAPE_REPRESENTATION_sorter());
 	std::map<unsigned long long, bool>* has_SURFACE_map(has_SURFACE(SURFACE_name));
 
 	for (auto i = REPRESENTATION_RELATIONSHIP_vec->begin(); i != REPRESENTATION_RELATIONSHIP_vec->end(); ++i)
 	{
-		unsigned long long assosiated_id = *(*i)->assosiated_ids->second;
-		auto id = ADVANCED_BREP_SHAPE_REPRESENTATION_map->end();
-
-		for (auto k = ADVANCED_BREP_SHAPE_REPRESENTATION_map->begin(); k != ADVANCED_BREP_SHAPE_REPRESENTATION_map->end(); ++k)
+		if (!(*i)->is_used())
 		{
-			if (*(*k).first == assosiated_id)
-			{
-				id = k;
-				break;
-			}
-		}
+			unsigned long long assosiated_id = *(*i)->assosiated_ids->second;
+			auto id = ADVANCED_BREP_SHAPE_REPRESENTATION_map->end();
 
-		if (id != ADVANCED_BREP_SHAPE_REPRESENTATION_map->end())
-		{
-			for (auto j = (*id).second->associated_ids->begin(); j != (*id).second->associated_ids->end(); ++j)
+			for (auto k = ADVANCED_BREP_SHAPE_REPRESENTATION_map->begin(); k != ADVANCED_BREP_SHAPE_REPRESENTATION_map->end(); ++k)
 			{
-				auto has_SURFACE(has_SURFACE_map->find(*(*j)));
-				if (has_SURFACE != has_SURFACE_map->end())
+				if (*(*k).first == assosiated_id)
 				{
-					if ((*has_SURFACE).second)
+					id = k;
+					break;
+				}
+			}
+
+			if (id != ADVANCED_BREP_SHAPE_REPRESENTATION_map->end())
+			{
+				for (auto j = (*id).second->associated_ids->begin(); j != (*id).second->associated_ids->end(); ++j)
+				{
+					if (has_SURFACE_with_id((*j), self_id))
 					{
-						assosiated_id = *(*i)->assosiated_ids->first;
-						auto tmp = ADVANCED_BREP_SHAPE_REPRESENTATION_map->end();
-						for (auto k = ADVANCED_BREP_SHAPE_REPRESENTATION_map->begin(); k != ADVANCED_BREP_SHAPE_REPRESENTATION_map->end(); ++k)
+						auto has_SURFACE(has_SURFACE_map->find(*(*j)));
+						if (has_SURFACE != has_SURFACE_map->end())
 						{
-							if (*(*k).first == assosiated_id)
+							if ((*has_SURFACE).second)
 							{
-								tmp = k;
-								break;
+								assosiated_id = *(*i)->assosiated_ids->first;
+								auto tmp = ADVANCED_BREP_SHAPE_REPRESENTATION_map->end();
+								for (auto k = ADVANCED_BREP_SHAPE_REPRESENTATION_map->begin(); k != ADVANCED_BREP_SHAPE_REPRESENTATION_map->end(); ++k)
+								{
+									if (*(*k).first == assosiated_id)
+									{
+										tmp = k;
+										break;
+									}
+								}
+								for (auto k = (*tmp).second->associated_ids->begin(); k != (*tmp).second->associated_ids->end(); ++k)
+								{
+									assosiated_id = *(*k);
+
+									SURFACE* SURFACE_buffer(new SURFACE(*SURFACE_buffer));
+									SURFACE_buffer->AXIS2_PLACEMENT_3D_data = get_AXIS2_PLACEMENT_3D(&assosiated_id);
+									SURFACE_vec->push_back(SURFACE_buffer);
+								}
+								(*i)->is_used(true);
 							}
-						}
-						for (auto k = (*tmp).second->associated_ids->begin(); k != (*tmp).second->associated_ids->end(); ++k)
-						{
-							SURFACE* SURFACE_buffer(new SURFACE(*SURFACE_buffer));
-							assosiated_id = *(*k);
-							SURFACE_buffer->AXIS2_PLACEMENT_3D_data = get_AXIS2_PLACEMENT_3D(&assosiated_id);
-							SURFACE_vec->insert(std::make_pair(self_id, SURFACE_buffer));
 						}
 					}
 				}
@@ -150,19 +156,20 @@ std::map<unsigned long long*, SURFACE*>* Model::additional_SURFACEs(unsigned lon
 }
 
 template <class SURFACE>
-std::map<unsigned long long*, SURFACE*>* Model::SURFACE_sorter()
+std::map<unsigned long long*, std::vector<SURFACE*>*>* Model::SURFACE_sorter()
 {
 	std::map<unsigned long long*, ADVANCED_FACE*>* input_ADVANCED_FACE;
 	if (ADVANCED_FACE_map->first) input_ADVANCED_FACE = ADVANCED_FACE_map->second;
 	else input_ADVANCED_FACE = ADVANCED_FACE_sorter();
 
-	std::map<unsigned long long*, SURFACE*>* SURFACE_map(new std::map<unsigned long long*, SURFACE*>);
+	std::map<unsigned long long*, std::vector<SURFACE*>*>* SURFACE_map(new std::map<unsigned long long*, std::vector<SURFACE*>*>);
 	std::string buffer;
 	size_t first_buffer(0);
 	size_t second_buffer(0);
 	double* smth_d_buff;
 	unsigned long long Id_buffer(0);
 	SURFACE* SURFACE_buffer(NULL);
+	std::vector<SURFACE*>* SURFACE_vec_buffer(new std::vector<SURFACE*>);
 	unsigned long long* self_id;
 
 	for (auto i = input_ADVANCED_FACE->begin(); i != input_ADVANCED_FACE->end(); ++i)
@@ -208,13 +215,15 @@ std::map<unsigned long long*, SURFACE*>* Model::SURFACE_sorter()
 
 						self_id = new unsigned long long((*k).first);
 
-						SURFACE_map->insert(std::make_pair(self_id, SURFACE_buffer));
-
-						std::map<unsigned long long*, SURFACE*> tmp_vec = *additional_SURFACEs<SURFACE>(self_id, SURFACE_buffer);
-						for (auto p = tmp_vec.begin(); p != tmp_vec.end(); ++p)
+						SURFACE_vec_buffer->push_back(SURFACE_buffer);
+						
+						std::vector<SURFACE*> add_vec = *additional_SURFACEs<SURFACE>(self_id, SURFACE_buffer);
+						for (auto p = add_vec.begin(); p != add_vec.end(); ++p)
 						{
-							SURFACE_map->insert(*p);
+							SURFACE_vec_buffer->push_back(*p);
 						}
+
+						SURFACE_map->insert(std::make_pair(self_id, SURFACE_vec_buffer));
 					}
 				}
 			}
@@ -276,22 +285,25 @@ std::map<unsigned long long*, B_SPLINE_SURFACE*>* Model::B_SPLINE_SURFACE_sorter
 }
 
 template <class SURFACE>
-void Model::print_SURFACE(std::map<unsigned long long*, SURFACE*> V)
+void Model::print_SURFACE(std::map<unsigned long long*, std::vector<SURFACE*>*>* V)
 {
-	for (auto i = V.begin(); i != V.end(); ++i)
+	for (auto i = V->begin(); i != V->end(); ++i)
 	{
 		std::cout << "id = " << *(*i).first << std::endl;
-		std::cout << *(*i).second->smth_str1 << std::endl;
-		for (auto j = (*i).second->AXIS2_PLACEMENT_3D_data->associated_ids->begin(); j < (*i).second->AXIS2_PLACEMENT_3D_data->associated_ids->end(); ++j)
+		for (auto p = (*i).second->begin(); p != (*i).second->end(); ++p)
 		{
-			std::cout << *(*j)->type << " " << *(*j)->smth_str1 << " " << *(*j)->x << " " << *(*j)->y << " " << *(*j)->z << std::endl;
+			std::cout << *(*p)->smth_str1 << std::endl;
+			for (auto j = (*p)->AXIS2_PLACEMENT_3D_data->associated_ids->begin(); j < (*p)->AXIS2_PLACEMENT_3D_data->associated_ids->end(); ++j)
+			{
+				std::cout << *(*j)->type << " " << *(*j)->smth_str1 << " " << *(*j)->x << " " << *(*j)->y << " " << *(*j)->z << std::endl;
+			}
+			for (auto j = (*p)->smth_d.begin(); j != (*p)->smth_d.end(); ++j)
+			{
+				std::cout << **j << " ";
+			}
+			std::cout << std::endl;
+			std::cout << std::endl;
 		}
-		for (auto j = (*i).second->smth_d.begin(); j != (*i).second->smth_d.end(); ++j)
-		{
-			std::cout << **j << " ";
-		}
-		std::cout << std::endl;
-		std::cout << std::endl;
 	}
 	return;
 }
@@ -301,41 +313,37 @@ void Model::print_data(std::string CLASS)
 	//24
 	if (CLASS == "CONICAL_SURFACE")
 	{
-		std::map<unsigned long long*, CONICAL_SURFACE*> v0 = *SURFACE_sorter<CONICAL_SURFACE>(); //#538 è #1155
 		std::cout << "\tConical surfaces:" << std::endl;
-		print_SURFACE(v0);
+		print_SURFACE(CONICAL_SURFACE_map);
 	}
 
 	//45
 	if (CLASS == "TOROIDAL_SURFACE")
 	{
-		std::map<unsigned long long*, TOROIDAL_SURFACE*> v1 = *SURFACE_sorter<TOROIDAL_SURFACE>();
 		std::cout << "\tToroidal surfaces:" << std::endl;
-		print_SURFACE(v1);
+		print_SURFACE(TOROIDAL_SURFACE_map);
 	}
 
 	//204
 	if (CLASS == "CYLINDRICAL_SURFACE")
 	{
-		std::map<unsigned long long*, CYLINDRICAL_SURFACE*> v2 = *SURFACE_sorter<CYLINDRICAL_SURFACE>();
 		std::cout << "\tCylindrical surfaces:" << std::endl;
-		print_SURFACE(v2);
+		print_SURFACE(CYLINDRICAL_SURFACE_map);
 	}
 
 	//4
 	if (CLASS == "SPHERICAL_SURFACE")
 	{
-		std::map<unsigned long long*, SPHERICAL_SURFACE*> v3 = *SURFACE_sorter<SPHERICAL_SURFACE>();
 		std::cout << "\tSpherical surfaces:" << std::endl;
-		print_SURFACE(v3);
+		print_SURFACE(SPHERICAL_SURFACE_map);
 	}
 
 	//4
 	if (CLASS == "B_SPLINE_SURFACE")
 	{
-		std::map<unsigned long long*, B_SPLINE_SURFACE*> v4 = *B_SPLINE_SURFACE_sorter(); //#975, #1001, #1191 è #2056
+		//#975, #1001, #1191 è #2056
 		std::cout << "\n\tB-spline surfaces:" << std::endl;
-		for (auto i = v4.begin(); i != v4.end(); ++i)
+		for (auto i = B_SPLINE_SURFACE_map->begin(); i != B_SPLINE_SURFACE_map->end(); ++i)
 		{
 			std::cout << "id = " << *(*i).first << std::endl;
 			std::cout << *(*i).second->smth_int1 << " " << *(*i).second->smth_int2 << std::endl;
@@ -358,13 +366,14 @@ void Model::print_data(std::string CLASS)
 
 Model::Model(std::string input_file_name) :
 	Data_handler(input_file_name),
-	CONICAL_SURFACE_map(new std::map<unsigned long long*, CONICAL_SURFACE*>),
-	SPHERICAL_SURFACE_map(new std::map<unsigned long long*, SPHERICAL_SURFACE*>),
-	CYLINDRICAL_SURFACE_map(new std::map<unsigned long long*, CYLINDRICAL_SURFACE*>),
-	TOROIDAL_SURFACE_map(new std::map<unsigned long long*, TOROIDAL_SURFACE*>),
+	CONICAL_SURFACE_map(new std::map<unsigned long long*, std::vector<CONICAL_SURFACE*>*>),
+	SPHERICAL_SURFACE_map(new std::map<unsigned long long*, std::vector<SPHERICAL_SURFACE*>*>),
+	CYLINDRICAL_SURFACE_map(new std::map<unsigned long long*, std::vector<CYLINDRICAL_SURFACE*>*>),
+	TOROIDAL_SURFACE_map(new std::map<unsigned long long*, std::vector<TOROIDAL_SURFACE*>*>),
 	B_SPLINE_SURFACE_map(new std::map<unsigned long long*, B_SPLINE_SURFACE*>)
 {
-
+	REPRESENTATION_RELATIONSHIP_vec = REPRESENTATION_RELATIONSHIP_sorter();
+	ADVANCED_BREP_SHAPE_REPRESENTATION_map = ADVANCED_BREP_SHAPE_REPRESENTATION_sorter();
 }
 
 Model::~Model()

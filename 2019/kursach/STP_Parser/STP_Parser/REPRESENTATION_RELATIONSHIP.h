@@ -10,9 +10,12 @@ class REPRESENTATION_RELATIONSHIP
 private:
 	std::pair<std::string*, std::string*>* smth_str;
 	std::pair<unsigned long long*, unsigned long long*>* assosiated_ids;
+	bool* _is_used;
 
 public:
 	REPRESENTATION_RELATIONSHIP();
 	~REPRESENTATION_RELATIONSHIP();
+
+	bool is_used(bool is_used = false);
 };
 #endif

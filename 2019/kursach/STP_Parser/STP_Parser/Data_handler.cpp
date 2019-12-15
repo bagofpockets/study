@@ -206,6 +206,36 @@ REPRESENTATION_RELATIONSHIP* Data_handler::get_REPRESENTATION_RELATIONSHIP(const
 	return REPRESENTATION_RELATIONSHIP_buff;
 }
 
+bool Data_handler::has_SURFACE_with_id(unsigned long long *MANIFOLD_ID, unsigned long long* ID)
+{
+	bool has_SURFACE_with_id(false);
+
+	for (auto i = MANIFOLD_SOLID_BREP_map->second->begin(); i != MANIFOLD_SOLID_BREP_map->second->end(); ++i)
+	{
+		if (*(*i).first == *MANIFOLD_ID)
+		{
+			for (auto j = CLOSED_SHELL_map->second->begin(); j != CLOSED_SHELL_map->second->end(); ++j)
+			{
+				if (*(*j).first == *(*i).second->associated_id)
+				{
+					for (auto q = (*j).second->associated_ids->begin(); q != (*j).second->associated_ids->end(); ++q)
+					{
+						for (auto k = ADVANCED_FACE_map->second->begin(); k != ADVANCED_FACE_map->second->end(); ++k)
+						{
+							if ((*(*k).first == *(*q)) && (*(*k).second->associated_id == *ID))
+							{
+								has_SURFACE_with_id = true;
+								return has_SURFACE_with_id;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return has_SURFACE_with_id;
+}
+
 /*-----Сортировщики-----*/
 
 std::map<unsigned long long*, MANIFOLD_SOLID_BREP*>* Data_handler::MANIFOLD_SOLID_BREP_sorter()
@@ -526,6 +556,9 @@ std::map<unsigned long long*, ADVANCED_BREP_SHAPE_REPRESENTATION*>* Data_handler
 
 Data_handler::Data_handler(std::string input_file_name) :
 	File_handler(input_file_name),
+	added_IDs(new std::map<unsigned long long*, bool>),
+	REPRESENTATION_RELATIONSHIP_vec(new std::vector<REPRESENTATION_RELATIONSHIP*>),
+	ADVANCED_BREP_SHAPE_REPRESENTATION_map(new std::map<unsigned long long*, ADVANCED_BREP_SHAPE_REPRESENTATION*>),
 	MANIFOLD_SOLID_BREP_map(new std::pair<bool, std::map<unsigned long long*, MANIFOLD_SOLID_BREP*>*>(false, new std::map<unsigned long long*, MANIFOLD_SOLID_BREP*>)),
 	CLOSED_SHELL_map(new std::pair<bool, std::map<unsigned long long*, CLOSED_SHELL*>*>(false, new std::map<unsigned long long*, CLOSED_SHELL*>)),
 	ADVANCED_FACE_map(new std::pair<bool, std::map<unsigned long long*, ADVANCED_FACE*>*>(false, new std::map<unsigned long long*, ADVANCED_FACE*>))
@@ -535,6 +568,9 @@ Data_handler::Data_handler(std::string input_file_name) :
 
 Data_handler::~Data_handler()
 {
+	delete added_IDs;
+	delete REPRESENTATION_RELATIONSHIP_vec;
+	delete ADVANCED_BREP_SHAPE_REPRESENTATION_map;
 	delete MANIFOLD_SOLID_BREP_map;
 	delete CLOSED_SHELL_map;
 	delete ADVANCED_FACE_map;

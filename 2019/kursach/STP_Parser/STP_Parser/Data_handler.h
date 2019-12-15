@@ -13,6 +13,9 @@
 class Data_handler : public File_handler
 {
 protected:
+	std::map<unsigned long long*, bool>* added_IDs;
+	std::vector<REPRESENTATION_RELATIONSHIP*>* REPRESENTATION_RELATIONSHIP_vec;
+	std::map<unsigned long long*, ADVANCED_BREP_SHAPE_REPRESENTATION*>* ADVANCED_BREP_SHAPE_REPRESENTATION_map;
 	std::pair<bool, std::map<unsigned long long*, MANIFOLD_SOLID_BREP*>*>* MANIFOLD_SOLID_BREP_map;
 	std::pair<bool, std::map<unsigned long long*, CLOSED_SHELL*>*>* CLOSED_SHELL_map;
 	std::pair<bool, std::map<unsigned long long*, ADVANCED_FACE*>*>* ADVANCED_FACE_map;
@@ -26,6 +29,8 @@ protected:
 	B_SPLINE_SURFACE* get_B_SPLINE_SURFACE(const std::string* buff);
 
 	REPRESENTATION_RELATIONSHIP* get_REPRESENTATION_RELATIONSHIP(const std::string* buff);
+
+	bool has_SURFACE_with_id(unsigned long long* MANIFOLD_ID, unsigned long long* ID);
 
 	/*-----Сортировщики-----*/
 

@@ -24,8 +24,8 @@ namespace pr3_5._2
             Parallel.For(1, K, (i) =>
             {
                 arr[i] = Math.Sqrt((Q * i) / 100);
-                Console.Write("{0}\t", arr[i]);
-                Console.WriteLine();
+                //Console.Write("{0}\t", arr[i]);
+                //Console.WriteLine();
                 P *= (N - 1) * arr[i];
             });
 
