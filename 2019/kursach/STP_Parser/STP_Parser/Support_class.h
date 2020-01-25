@@ -4,7 +4,8 @@
 #define SUPPORT_CLASS_H
 class Support_class //Абстракция CARTESIAN_POINT и DIRECTION
 {
-	friend class File_handler;
+	friend class Data_handler;
+	friend class Model;
 
 private:
 	std::string* smth_str1;

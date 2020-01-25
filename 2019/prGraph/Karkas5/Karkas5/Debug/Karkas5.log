@@ -1,0 +1,13 @@
+﻿  Karkas5.cpp
+C:\GitHub\study\2019\prGraph\Karkas5\Karkas5\Karkas5.cpp(31,67): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas5\Karkas5\Karkas5.cpp(32,67): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas5\Karkas5\Karkas5.cpp(33,50): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas5\Karkas5\Karkas5.cpp(34,50): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas5\Karkas5\Karkas5.cpp(35,36): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas5\Karkas5\Karkas5.cpp(36,36): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas5\Karkas5\Karkas5.cpp(37,50): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas5\Karkas5\Karkas5.cpp(38,50): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas5\Karkas5\Karkas5.cpp(41,17): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas5\Karkas5\Karkas5.cpp(42,37): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+C:\GitHub\study\2019\prGraph\Karkas5\Karkas5\Karkas5.cpp(43,37): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+  Karkas5.vcxproj -> C:\GitHub\study\2019\prGraph\Karkas5\Debug\Karkas5.exe

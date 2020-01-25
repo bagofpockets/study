@@ -199,7 +199,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		//CombineRgn(hRgn, CreateEllipticRgn(-100, 100, 100, -100), CreateEllipticRgn(-50, 50, 50, -50), WINDING);
 		SelectObject(hdc, hBrush);
 		FillPath(hdc); //Режим закрашивания "вся фигура"
-		FillPath(hdc);
 
 		EndPaint(hWnd, &ps);
 	}

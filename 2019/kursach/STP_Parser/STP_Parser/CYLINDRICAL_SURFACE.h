@@ -5,12 +5,12 @@
 #define CYLINDRICAL_SURFACE_H
 class CYLINDRICAL_SURFACE : public ADVANCED_FACE
 {
-	friend class File_handler;
+	friend class Data_handler;
+	friend class Model;
 
 private:
 	AXIS2_PLACEMENT_3D* AXIS2_PLACEMENT_3D_data;
-	double* smth_d1;
-	double* smth_d2;
+	std::vector<double*> smth_d;
 
 public:
 	CYLINDRICAL_SURFACE();
