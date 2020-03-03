@@ -14,95 +14,60 @@ class Lab1:
 
         self.x = data['x'].values
         self.y = data['y'].values
-
-    def linear_regression(self):
-        x_mean = np.mean(self.x)
-        y_mean = np.mean(self.y)
-        n = len(self.x)
-
-        numerator = 0
-        denominator = 0
-        for i in range(n):
-            numerator += (self.x[i] - x_mean) * (self.y[i] - y_mean)
-            denominator += (self.x[i] - x_mean) ** 2
-            
-        b1 = numerator / denominator
-        b0 = y_mean - (b1 * x_mean)
-
-        x_max = np.max(self.x) + 0.1
-        x_min = np.min(self.x) - 0.1
-        x = np.linspace(x_min, x_max, 1000)
-        y = b0 + b1 * x - 0.03 *(x ** 2)
+        self.matrix = [[]]
         
-        plt.close('all')
-        plt.plot(x, y, color='#00ff00', label='Linear Regression')
-        plt.scatter(self.x, self.y, color='#ff0000', label='Data Point')
-        plt.xlabel('x')
-        plt.ylabel('y')
-        plt.legend()
-        plt.show()
 
+    def polynom(self, k):
+        if (k > len(self.x)) or (k > len(self.y)):
+            print('f')
+        else:
+            for i in range(0, k):
+                if i == 0:
+                    tmp = [k]
+                    for j in range(1, k + 1):
+                        tmp.append(np.sum(np.power(self.x, j)))
+                    self.matrix[0] = tmp
+                    self.matrix[0].append(np.sum(self.y))
+                    continue
+                else:
+                    tmp = []
+                    for j in range(i, k + i + 1):
+                        tmp.append(np.sum(np.power(self.x, j)))
+                    self.matrix.append(tmp)
+                    self.matrix[i].append(np.sum(np.power(self.x, i)) * np.sum(self.y))
+        return self.matrix
+
+    def gauss(self, A):
+        n = len(A)
+
+        for i in range(0, n):
+            maxEl = abs(A[i][i])
+            maxRow = i
+            for k in range(i+1, n):
+                if abs(A[k][i]) > maxEl:
+                    maxEl = abs(A[k][i])
+                    maxRow = k
+
+        for k in range(i, n + 1):
+            tmp = A[maxRow][k]
+            A[maxRow][k] = A[i][k]
+            A[i][k] = tmp
+
+        for k in range(i + 1, n):
+            c = -A[k][i]/A[i][i]
+            for j in range(i, n+1):
+                if i == j:
+                    A[k][j] = 0
+                else:
+                    A[k][j] += c * A[i][j]
         
-        '''
-        data_series = pd.Series([[1.577, 2.518], 
-                                 [1.538, 2.390], 
-                                 [1.333, 2.566], 
-                                 [1.847, 1.789], 
-                                 [1.797, 2.069], 
-                                 [1.910, 1.776], 
-                                 [1.371, 2.633], 
-                                 [1.527, 2.136], 
-                                 [1.632, 2.302], 
-                                 [1.034, 3.327]],
-                                 name = "dots")
+        x = [0 for i in range(n)]
+        for i in range(n-1, -1, -1):
+            x[i] = A[i][n]/A[i][i]
+            for k in range(i-1, -1, -1):
+                A[k][n] -= A[k][i] * x[i]
+        return x
 
-        self.eta = eta
-        self.n_iterations = n_iterations
-        self.data = data
-        self.data.index.name = 'id'
-
-    def fit(self):
-        iadarr = self.data.index.to_numpy()
-        self.w_ = np.zeros((iadarr.reshape((iadarr.shape[0], 1))
-                                            .shape[1], 1))
-        self.cost_ = []
-        m = iadarr.shape[0]
-        x = self.data.x.to_numpy()
-        x = x.reshape((x.shape[0], 1))
-        y = self.data.y.to_numpy()
-        y = y.reshape((y.shape[0], 1))
-
-        for _ in range(self.n_iterations):
-            y_pred = np.dot(x, self.w_)
-            residuals = y_pred - y
-            gradient_vector = np.dot(x.T, residuals)
-            self.w_ -= (self.eta / m) * gradient_vector
-            cost = np.sum((residuals ** 2)) / (2 * m)
-            self.cost_.append(cost)
-        return self
-
-    def predict(self, x):
-        return np.dot(x, self.w_[0,0])
-#print(data['x'][0])
-#print(data['y'][0])
-#print(max(data.index))
-#print(max(data['x']))
-#data['a'] = data.y/data.x
-#print(data.sort_values(by=['a'], ascending=False))
-'''
-
-if __name__ == "__main__":
-    v12 = Lab1()
-    v12.do_the_lab()
-    '''
-    v12.fit()
-    v12.data['yw'] = v12.w_[0,0] * v12.data['y']
-    print(v12.data)
-    ax = plt.gca()
-    #v12.data.plot.scatter(x = 'x', y = 'y', ax = ax)
-    v12.data.plot.scatter(x = 'x', y = 'y', ax = ax)
-    v12.data.plot.scatter(x = 'x', y = 'yw', ax = ax, color='k')
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.show()
-    '''
+v12 = Lab1()
+print(v12.gauss(v12.polynom(2)))
+print(v12.matrix)
