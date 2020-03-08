@@ -1,5 +1,3 @@
-#v12
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -7,21 +5,23 @@ import copy
 
 class Lab1:
 
-    def __init__(self, eta = 0.05, n_iterations = 1000, data = pd.DataFrame({
+    def __init__(self, data = pd.DataFrame({
         'x': [1.577, 1.538, 1.333, 1.847, 1.797, 1.910, 1.371, 1.527, 1.632, 1.034],
         'y': [2.518, 2.390, 2.566, 1.789, 2.069, 1.776, 2.633, 2.136, 2.302, 3.327]}
         )):
 
-        self.data = pd.read_csv('2020\\vichmat\lab1.csv', sep = '|')
-        #data.to_csv('study\\2020\\vichmat\lab1.csv', index=False, sep = '|')
+        #self.data = pd.read_csv('C:\GitHub\study\\2020\\vichmat\\lab1\data.csv', sep = '|')
+        #data.to_csv('study\\2020\\vichmat\\lab1\data.csv', index=False, sep = '|')
+        self.k = 0
+
+    def set_data(self, filename):
+        self.data = pd.read_csv(filename, sep = '|')
         self.x = self.data['x'].values
         self.y = self.data['y'].values
-        self.matrix = [[]]
-        self.coeffs = []
-        self.k = 0
 
     def polynom(self, k):
         self.k = k
+        self.matrix = [[]]
         if ((k > len(self.x)) or (k > len(self.y))) and k>0:
             print('fck u')
         else:
@@ -43,6 +43,7 @@ class Lab1:
         return self.matrix
 
     def gauss(self, A):
+        self.coeffs = []
         A = copy.deepcopy(A)
         m = len(A)
         n = m + 1
@@ -73,29 +74,43 @@ class Lab1:
             y_pred += a * (x ** i)
         return y_pred
 
-    def graph(self, show = True):
-        y_pred = []
-        for i in self.x:
-            y_pred.append(self.predict(i))
-        self.data['y_pred'] = y_pred
-        
-        x_pred = np.linspace(min(self.x) - 0.5, max(self.x) + 0.5, 100)
-        y_pred = []
-        for i in x_pred:
-            y_pred.append(self.predict(i))
-        
-        print('Matrix\n', np.array(self.matrix))
-        self.coeffs.reverse()
-        print('Coeffs\n', np.array(self.coeffs))
-        
+    def graph(self, val_pred1, val_pred2, show = True):
         plt.close('all')
+        plt.figure(num='Lab1')
         plt.scatter(self.x, self.y, label = 'Data')
-        plt.plot(x_pred, y_pred, color='r', label = 'Regression line, k=' + str(self.k))
+        
+        plt.plot(val_pred1[0], val_pred1[1], color='r', linestyle='dotted', label = 'Regression line, k=1')
+        
+        plt.plot(val_pred2[0], val_pred2[1], color='g', linestyle='dashed', label = 'Regression line, k=2')
+
         plt.xlabel('x')
         plt.ylabel('y')
         plt.legend()
         if show: plt.show()
 
-v12 = Lab1()
-v12.gauss(v12.polynom(1))
-v12.graph()
+    def stats(self, y_pred):
+        stats = ''
+
+        mse = np.mean((y_pred - self.y)**2)
+
+        rmse = np.sqrt(mse/len(self.x))
+        stats += 'Root mean squared error = ' + str(rmse) + '\n'
+
+        ssr = np.sum((y_pred - self.y)**2)
+        stats += 'Sum of square of residuals = ' + str(ssr) + '\n'
+
+        sst = np.sum((self.y - np.mean(self.y))**2)
+        stats += 'Total sum of squares = ' + str(sst) + '\n'
+
+        r2_score = 1 - (ssr/sst)
+        stats += 'R2 score = ' + str(r2_score) + '\n'
+
+        return stats
+
+    def pretty(self, matrix):
+        pretty_string = 'Matrix, k=' + str(len(matrix) - 1) + ':\n'
+
+        for i in matrix:
+            pretty_string += str(i)[1:-1] + '\n'
+
+        return pretty_string
