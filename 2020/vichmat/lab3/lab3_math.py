@@ -1,12 +1,20 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import copy
+from sympy import *
 
-class Lab1:
+class Lab3:
 
     def __init__(self):
-        self.k = 0
+        self.H = []
+        self.T = []
+
+        self.h = 0.005
+        self.V = 0.
+        self.S = 0.
+        self.l = 0.
+        self.p1 = 0.
+        self.v = 0.
 
     def set_data(self, filename):
         self.data = pd.read_csv(filename, sep = '|')
@@ -14,26 +22,22 @@ class Lab1:
         self.y = self.data['y'].values
 
     def polynom(self, k):
-        self.k = k
         self.matrix = [[]]
-        if ((k > len(self.x)) or (k > len(self.y))) and k>0:
-            print('fck u')
-        else:
-            k = k + 1
-            for i in range(0, k):
-                if i == 0:
-                    tmp = [len(self.x)]
-                    for j in range(1, k):
-                        tmp.append(np.sum(np.power(self.x, j)))
-                    self.matrix[0] = tmp
-                    self.matrix[0].append(np.sum(self.y))
-                    continue
-                else:
-                    tmp = []
-                    for j in range(i, k + i):
-                        tmp.append(np.sum(np.power(self.x, j)))
-                    self.matrix.append(tmp)
-                    self.matrix[i].append(np.sum(np.power(self.x, i) * self.y))
+        k = k + 1
+        for i in range(0, k):
+            if i == 0:
+                tmp = [len(self.x)]
+                for j in range(1, k):
+                    tmp.append(np.sum(np.power(self.x, j)))
+                self.matrix[0] = tmp
+                self.matrix[0].append(np.sum(self.y))
+                continue
+            else:
+                tmp = []
+                for j in range(i, k + i):
+                    tmp.append(np.sum(np.power(self.x, j)))
+                self.matrix.append(tmp)
+                self.matrix[i].append(np.sum(np.power(self.x, i) * self.y))
         return self.matrix
 
     def gauss(self, A):
@@ -68,14 +72,32 @@ class Lab1:
             y_pred += a * (x ** i)
         return y_pred
 
-    def graph(self, val_pred1, val_pred2, show = True):
+    def a(H, y):
+        n = 0.001
+        p0 = 1000.
+        g = 9.8
+        a = 0.01
+
+        ay = -(((n*self.S/self.l)/(self.V*self.p1))*(1+(a*y/H))*self.v)+g*(p0/self.p1-1)
+        return ay
+
+    def rungekutta(H):
+        y = H
+        k1 = self.h * a(y)
+        k2 = self.h * a(y + 0.5 * k1)
+        k3 = self.h * a(y + 0.5 * k2)
+        k4 = self.h * a(y + k3)
+
+        y = y + (1.0 / 6.0)*(k1 + 2 * k2 + 2 * k3 + k4)
+
+        return y
+
+    def graph(self, val_pred, show = True):
         plt.close('all')
-        plt.figure(num='Lab1')
+        plt.figure(num='Lab3')
         plt.scatter(self.x, self.y, label = 'Data')
         
-        plt.plot(val_pred1[0], val_pred1[1], color='r', linestyle='dotted', label = 'Regression line, k=1')
-        
-        plt.plot(val_pred2[0], val_pred2[1], color='g', linestyle='dashed', label = 'Regression line, k=2')
+        plt.plot(val_pred[0], val_pred[1], color='r', linestyle='dashed', label = 'Regression line, k=2')
 
         plt.xlabel('x')
         plt.ylabel('y')
@@ -108,3 +130,6 @@ class Lab1:
             pretty_string += str(i)[1:-1] + '\n'
 
         return pretty_string
+
+if __name__ == '__main__':
+    v12 = Lab3()

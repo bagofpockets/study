@@ -2,8 +2,8 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-import lab1_ui
-import lab1_math
+import lab3_ui
+import lab3_math
 import sys
 from PyQt5 import QtWidgets
 
@@ -32,30 +32,10 @@ class App(QtWidgets.QMainWindow, lab1_ui.Ui_MainWindow, lab1_math.Lab1):
         self.text.setText(text)
 
     def do_lab1(self):
-        if self.filename == '':
+        if (self.line_V.text() == '') or (self.line_S.text() == '') or (self.line_l.text() == '') or (self.line_H.text() == '') or (self.line_p1.text() == '') or (self.line_v.text() == '') or (self.filename == ''):
             self.text.clear()
             self.text.setText('Из чего?')
         else:
-            x_val = 'x ' + str(self.x)[1:-1] + '\n'
-            y_val = 'y ' + str(self.y)[1:-1] + '\n'
-            text = x_val + y_val
-            self.text.setText(text)
-            matrix = self.polynom(1)
-            self.text.append(self.pretty(matrix))
-
-            coeffs = self.gauss(matrix)
-            self.text.append('Coeffs, k=1:\n' + str(coeffs[::-1])[1:-1] + '\n')
-
-            y_pred = []
-            for i in self.x:
-                y_pred.append(self.predict(i))
-            self.text.append(self.stats(y_pred))
-            
-            val_pred1 = [[], []]
-            val_pred1[0] = np.linspace(min(self.x) - 0.5, max(self.x) + 0.5, 100)
-            for i in val_pred1[0]:
-                val_pred1[1].append(self.predict(i))
-            #---------------------------------------
             matrix = self.polynom(2)
             self.text.append(self.pretty(matrix))
 
@@ -67,12 +47,12 @@ class App(QtWidgets.QMainWindow, lab1_ui.Ui_MainWindow, lab1_math.Lab1):
                 y_pred.append(self.predict(i))
             self.text.append(self.stats(y_pred))
 
-            val_pred2 = [[], []]
-            val_pred2[0] = np.linspace(min(self.x) - 0.5, max(self.x) + 0.5, 100)
-            for i in val_pred2[0]:
-                val_pred2[1].append(self.predict(i))
+            val_pred = [[], []]
+            val_pred[0] = np.linspace(min(self.x) - 0.5, max(self.x) + 0.5, 100)
+            for i in val_pred[0]:
+                val_pred[1].append(self.predict(i))
 
-            self.graph(val_pred1, val_pred2)
+            self.graph(val_pred)
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
