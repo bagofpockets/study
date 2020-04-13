@@ -17,9 +17,6 @@ class Ui_MainWindow(object):
         self.btnDo = QtWidgets.QPushButton(self.centralwidget)
         self.btnDo.setObjectName("btnDo")
         self.horizontalLayout.addWidget(self.btnDo)
-        self.btnBrowse = QtWidgets.QPushButton(self.centralwidget)
-        self.btnBrowse.setObjectName("btnBrowse")
-        self.horizontalLayout.addWidget(self.btnBrowse)
         self.gridLayout.addLayout(self.horizontalLayout, 3, 0, 1, 1)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -80,7 +77,6 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Lab3"))
         self.btnDo.setText(_translate("MainWindow", "Сделать красиво"))
-        self.btnBrowse.setText(_translate("MainWindow", "Выбрать данные"))
         self.label_V.setText(_translate("MainWindow", "V"))
         self.label_S.setText(_translate("MainWindow", "S сеч"))
         self.label_l.setText(_translate("MainWindow", "l"))

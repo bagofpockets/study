@@ -1,0 +1,1 @@
+pyinstaller -n "Lab3" -i "icon.ico" -w main.py

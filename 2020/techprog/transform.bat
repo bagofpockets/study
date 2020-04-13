@@ -1,0 +1,1 @@
+pyuic5 C:\GitHub\study\2020\techprog\Hata.ui -o C:\GitHub\study\2020\techprog\Hata_ui.py

@@ -1,0 +1,1 @@
+pyuic5 C:\GitHub\study\2020\vichmat\lab3\lab3.ui -o C:\GitHub\study\2020\vichmat\lab3\lab3_ui.py

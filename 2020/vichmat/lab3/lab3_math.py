@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import copy
-from sympy import *
 
 class Lab3:
 
@@ -16,29 +15,47 @@ class Lab3:
         self.p1 = 0.
         self.v = 0.
 
-    def set_data(self, filename):
-        self.data = pd.read_csv(filename, sep = '|')
-        self.x = self.data['x'].values
-        self.y = self.data['y'].values
+    def a(H, y):
+        n = 0.001
+        p0 = 1000.
+        g = 9.8
+        a = 0.01
 
-    def polynom(self, k):
-        self.matrix = [[]]
-        k = k + 1
-        for i in range(0, k):
-            if i == 0:
-                tmp = [len(self.x)]
-                for j in range(1, k):
-                    tmp.append(np.sum(np.power(self.x, j)))
-                self.matrix[0] = tmp
-                self.matrix[0].append(np.sum(self.y))
-                continue
-            else:
-                tmp = []
-                for j in range(i, k + i):
-                    tmp.append(np.sum(np.power(self.x, j)))
-                self.matrix.append(tmp)
-                self.matrix[i].append(np.sum(np.power(self.x, i) * self.y))
-        return self.matrix
+        ay = -(((n*self.S/self.l)/(self.V*self.p1))*(1+(a*y/H))*self.v)+g*(p0/self.p1-1)
+        return ay
+
+    def rungekutta(H):
+        y = H
+        k1 = self.h * a(y)
+        k2 = self.h * a(y + 0.5 * k1)
+        k3 = self.h * a(y + 0.5 * k2)
+        k4 = self.h * a(y + k3)
+
+        y = y + (1.0 / 6.0)*(k1 + 2 * k2 + 2 * k3 + k4)
+
+        return y
+
+     def polynom(self, k , x, y):
+        matrix = [[]]
+        if ((k > len(x)) or (k > len(y))) and k>0:
+            print('fck u')
+        else:
+            k = k + 1
+            for i in range(0, k):
+                if i == 0:
+                    tmp = [len(x)]
+                    for j in range(1, k):
+                        tmp.append(np.sum(np.power(x, j)))
+                    matrix[0] = tmp
+                    matrix[0].append(np.sum(y))
+                    continue
+                else:
+                    tmp = []
+                    for j in range(i, k + i):
+                        tmp.append(np.sum(np.power(x, j)))
+                    matrix.append(tmp)
+                    matrix[i].append(np.sum(np.power(x, i) * y))
+        return matrix
 
     def gauss(self, A):
         self.coeffs = []
@@ -72,25 +89,6 @@ class Lab3:
             y_pred += a * (x ** i)
         return y_pred
 
-    def a(H, y):
-        n = 0.001
-        p0 = 1000.
-        g = 9.8
-        a = 0.01
-
-        ay = -(((n*self.S/self.l)/(self.V*self.p1))*(1+(a*y/H))*self.v)+g*(p0/self.p1-1)
-        return ay
-
-    def rungekutta(H):
-        y = H
-        k1 = self.h * a(y)
-        k2 = self.h * a(y + 0.5 * k1)
-        k3 = self.h * a(y + 0.5 * k2)
-        k4 = self.h * a(y + k3)
-
-        y = y + (1.0 / 6.0)*(k1 + 2 * k2 + 2 * k3 + k4)
-
-        return y
 
     def graph(self, val_pred, show = True):
         plt.close('all')
@@ -103,25 +101,6 @@ class Lab3:
         plt.ylabel('y')
         plt.legend()
         if show: plt.show()
-
-    def stats(self, y_pred):
-        stats = ''
-
-        mse = np.mean((y_pred - self.y)**2)
-
-        rmse = np.sqrt(mse/len(self.x))
-        stats += 'Root mean squared error = ' + str(rmse) + '\n'
-
-        ssr = np.sum((y_pred - self.y)**2)
-        stats += 'Sum of square of residuals = ' + str(ssr) + '\n'
-
-        sst = np.sum((self.y - np.mean(self.y))**2)
-        stats += 'Total sum of squares = ' + str(sst) + '\n'
-
-        r2_score = 1 - (ssr/sst)
-        stats += 'R2 score = ' + str(r2_score) + '\n'
-
-        return stats
 
     def pretty(self, matrix):
         pretty_string = 'Matrix, k=' + str(len(matrix) - 1) + ':\n'

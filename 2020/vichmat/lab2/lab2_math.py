@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import bisect
-from sympy import *
+import sympy as sm
 
 class Lab2:
 
@@ -80,16 +80,16 @@ class Lab2:
 
     def moving_shar(self):
         if self.shar == True:
-            omega = sqrt(self.k / self.m)
-            A = Symbol('A')
-            B = Symbol('B')
-            t = Symbol('t')
-            rt = A*sin(omega*t) + B*cos(omega*t)
+            omega = sm.sqrt(self.k / self.m)
+            A = sm.Symbol('A')
+            B = sm.Symbol('B')
+            t = sm.Symbol('t')
+            rt = A*sm.sin(omega*t) + B*sm.cos(omega*t)
             vt = rt.diff(t)
-            rt = lambdify(t, rt)
-            vt = lambdify(t, vt)
-            solution = solve([rt(0) - self.r0, vt(0) - self.v0])
-            rt = solution[A]*sin(omega*t) + solution[B]*cos(omega*t)
+            rt = sm.lambdify(t, rt)
+            vt = sm.lambdify(t, vt)
+            solution = sm.solve([rt(0) - self.r0, vt(0) - self.v0])
+            rt = solution[A]*sm.sin(omega*t) + solution[B]*sm.cos(omega*t)
             return str(rt)
 
     def graph(self, show = True):
