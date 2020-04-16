@@ -1,41 +1,54 @@
 import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
 import numpy as np
 import copy
 
 class Lab3:
 
     def __init__(self):
-        self.H = []
-        self.T = []
+        self.V = 200000.
+        self.S = 3400.
+        self.l = 170.
+        self.H = -170.
+        self.p1 = 75.
+        self.v = 12.5
 
-        self.h = 0.005
-        self.V = 0.
-        self.S = 0.
-        self.l = 0.
-        self.p1 = 0.
-        self.v = 0.
+    def dydt(self, y, z, t):
+        return z
 
-    def a(H, y):
+    def dzdt(self, y, z, t):
         n = 0.001
         p0 = 1000.
         g = 9.8
         a = 0.01
+        return -((n*self.S/self.l)/(self.V*self.p1))*self.dydt(y, z, t) + g*(p0/self.p1 - 1)
 
-        ay = -(((n*self.S/self.l)/(self.V*self.p1))*(1+(a*y/H))*self.v)+g*(p0/self.p1-1)
-        return ay
+    def rungekutta(self, y0, z0, t0, h = 0.01, n = 20):
+        ts = np.arange(t0, t0 - n*self.H*h, h)
+        vals = [[self.v*t0], [y0], [t0]]
 
-    def rungekutta(H):
-        y = H
-        k1 = self.h * a(y)
-        k2 = self.h * a(y + 0.5 * k1)
-        k3 = self.h * a(y + 0.5 * k2)
-        k4 = self.h * a(y + k3)
+        for t in ts:
+            k11 = h*self.dydt(y0, z0, t)
+            k21 = h*self.dzdt(y0, z0, t)
+            k12 = h*self.dydt(y0+0.5*k11, z0+0.5*k21, t+0.5*h)
+            k22 = h*self.dzdt(y0+0.5*k11, z0+0.5*k21, t+0.5*h)
+            k13 = h*self.dydt(y0+0.5*k12, z0+0.5*k22, t+0.5*h)
+            k23 = h*self.dzdt(y0+0.5*k12, z0+0.5*k22, t+0.5*h)
+            k14 = h*self.dydt(y0+k13, z0+k23, t+h)
+            k24 = h*self.dzdt(y0+k13, z0+k23, t+h)
 
-        y = y + (1.0 / 6.0)*(k1 + 2 * k2 + 2 * k3 + k4)
+            y0 = y0 + (k11+2*k12+2*k13+k14)/6
+            z0 = z0 + (k21+2*k22+2*k23+k24)/6
 
-        return y
+            vals[0].append(self.v*t)
+            vals[1].append(y0)
+            vals[2].append(t)
 
-     def polynom(self, k , x, y):
+            if y0 >= 0: break 
+
+        return vals
+
+    def polynom(self, k, x, y):
         matrix = [[]]
         if ((k > len(x)) or (k > len(y))) and k>0:
             print('fck u')
@@ -58,7 +71,6 @@ class Lab3:
         return matrix
 
     def gauss(self, A):
-        self.coeffs = []
         A = copy.deepcopy(A)
         m = len(A)
         n = m + 1
@@ -80,35 +92,28 @@ class Lab3:
             x.insert(0, A[i][m] / A[i][i])
             for k in range(i - 1, -1, -1):
                 A[k][m] -= A[k][i] * x[0]
-        self.coeffs = x
         return x
 
-    def predict(self, x):
-        y_pred = self.coeffs[0]
-        for i, a in zip(range(1, len(self.coeffs[1:]) + 1), self.coeffs[1:]):
+    def predict(self, x, coeffs):
+        y_pred = coeffs[0]
+        for i, a in zip(range(1, len(coeffs[1:]) + 1), coeffs[1:]):
             y_pred += a * (x ** i)
         return y_pred
 
-
-    def graph(self, val_pred, show = True):
+    def graph(self, vals, vals_pred1, vals_pred2, show = True):
         plt.close('all')
         plt.figure(num='Lab3')
-        plt.scatter(self.x, self.y, label = 'Data')
+        ax = plt.axes(projection='3d')
+        ax.scatter3D(vals[0], vals[2], vals[1], label = 'Runge–Kutta')
         
-        plt.plot(val_pred[0], val_pred[1], color='r', linestyle='dashed', label = 'Regression line, k=2')
+        ax.plot3D(vals_pred1[2], vals_pred1[0], vals_pred1[1],  color='r', linestyle='dashed', label = 'Approximated trajectory, y = y(t)')
+        ax.plot3D(vals_pred2[0], vals_pred2[2], vals_pred2[1],  color='g', linestyle='dashed', label = 'Approximated trajectory, y = y(x)')
 
-        plt.xlabel('x')
-        plt.ylabel('y')
-        plt.legend()
+        ax.set_xlabel('x')
+        ax.set_ylabel('t')
+        ax.set_zlabel('y')
+        ax.legend()
         if show: plt.show()
-
-    def pretty(self, matrix):
-        pretty_string = 'Matrix, k=' + str(len(matrix) - 1) + ':\n'
-
-        for i in matrix:
-            pretty_string += str(i)[1:-1] + '\n'
-
-        return pretty_string
 
 if __name__ == '__main__':
     v12 = Lab3()

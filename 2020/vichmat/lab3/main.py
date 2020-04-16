@@ -17,41 +17,48 @@ class App(QtWidgets.QMainWindow, lab3_ui.Ui_MainWindow, lab3_math.Lab3):
     def closeEvent(self, event):
         plt.close('all')
 
-    def browse_files(self):
-        options = QtWidgets.QFileDialog.Options()
-        options |= QtWidgets.QFileDialog.DontUseNativeDialog
-        self.filename = QtWidgets.QFileDialog.getOpenFileName(self,"Выбрать данные", "", options=options)
-        self.text.clear()
-        plt.close('all')
-        filename = str(self.filename[0])
-        self.set_data(filename)
-        x_val = 'x ' + str(self.x)[1:-1] + '\n'
-        y_val = 'y ' + str(self.y)[1:-1] + '\n'
-        text = x_val + y_val
-        self.text.setText(text)
-
     def do_lab3(self):
-        if (self.line_V.text() == '') or (self.line_S.text() == '') or (self.line_l.text() == '') or (self.line_H.text() == '') or (self.line_p1.text() == '') or (self.line_v.text() == '') or (self.filename == ''):
+        if  (self.line_V.text() == '') or (self.line_S.text() == '') or (self.line_l.text() == '') or (self.line_H.text() == '') or (self.line_p1.text() == '') or (self.line_v.text() == ''):
             self.text.clear()
             self.text.setText('Из чего?')
         else:
-            matrix = self.polynom(2)
-            self.text.append(self.pretty(matrix))
+            self.text.clear()
+            self.H = -float(self.line_H.text())
+            self.V = float(self.line_V.text())
+            self.S = float(self.line_S.text())
+            self.l = float(self.line_l.text())
+            self.p1 = float(self.line_p1.text())
+            self.v = float(self.line_v.text())
 
+            vals = self.rungekutta(self.H, 0, 0)
+
+            matrix = self.polynom(2, vals[2], vals[1])
             coeffs = self.gauss(matrix)
-            self.text.append('Coeffs, k=2:\n' + str(coeffs[::-1])[1:-1] + '\n')
 
-            y_pred = []
-            for i in self.x:
-                y_pred.append(self.predict(i))
-            self.text.append(self.stats(y_pred))
+            T = 0.
+            vals_pred1 = [[], [], []]
+            vals_pred1[0] = np.linspace(min(vals[2]), max(vals[2]), 10*len(vals[0]))
+            for t in vals_pred1[0]:
+                y_pred = self.predict(t, coeffs)
+                vals_pred1[1].append(y_pred)
+                if y_pred >= 0:
+                    T = t
+                    self.text.append('T = ' + str(T) + '\nL = ' + str(self.v*T))
+                    break
+            vals_pred1[2] = [0]*len(vals_pred1[1])
+            vals_pred1[0] = vals_pred1[0][:len(vals_pred1[1])]
 
-            val_pred = [[], []]
-            val_pred[0] = np.linspace(min(self.x) - 0.5, max(self.x) + 0.5, 100)
-            for i in val_pred[0]:
-                val_pred[1].append(self.predict(i))
+            matrix = self.polynom(2, vals[0], vals[1])
+            coeffs = self.gauss(matrix)
+            
+            vals_pred2 = [[], [], []]
+            vals_pred2[0] = np.linspace(min(vals[0]), max(vals[0]), 10*len(vals[0]))
+            for x in vals_pred2[0]:
+                y_pred = self.predict(x, coeffs)
+                vals_pred2[1].append(y_pred)
+            vals_pred2[2] = [0]*len(vals_pred2[1])
 
-            self.graph(val_pred)
+            self.graph(vals, vals_pred1, vals_pred2)
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
