@@ -21,7 +21,7 @@ class Lab3:
         p0 = 1000.
         g = 9.8
         a = 0.01
-        return -((n*self.S/self.l)/(self.V*self.p1))*self.dydt(y, z, t) + g*(p0/self.p1 - 1)
+        return -((n*self.S/self.l)/(self.V*self.p1))*(1+a*y/self.H)*self.dydt(y, z, t) + g*(p0/self.p1 - 1)
 
     def rungekutta(self, y0, z0, t0, h = 0.01, n = 20):
         ts = np.arange(t0, t0 - n*self.H*h, h)
