@@ -1,1 +1,0 @@
-pyinstaller -n "Lab1" -i "icon.ico" -w main.py
