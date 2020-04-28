@@ -1,18 +1,30 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QMovie
 import datetime
 import os
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        self.scriptDir = os.path.dirname(os.path.realpath(__file__))
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1200, 900)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
-        self.roomprops = QtWidgets.QTextBrowser(self.centralwidget)
-        self.roomprops.setObjectName("roomprops")
-        self.gridLayout.addWidget(self.roomprops, 1, 1, 1, 1)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.ListRooms = QtWidgets.QListWidget(self.centralwidget)
+        self.ListRooms.setObjectName("ListRooms")
+        self.horizontalLayout.addWidget(self.ListRooms)
+        self.gridLayout.addLayout(self.horizontalLayout, 0, 1, 1, 1)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.BtnReservate = QtWidgets.QPushButton(self.centralwidget)
+        self.BtnReservate.setObjectName("BtnReservate")
+        self.horizontalLayout_2.addWidget(self.BtnReservate)
+        self.gridLayout.addLayout(self.horizontalLayout_2, 2, 1, 1, 1)
         self.formLayout_4 = QtWidgets.QFormLayout()
         self.formLayout_4.setObjectName("formLayout_4")
         self.text_name = QtWidgets.QLabel(self.centralwidget)
@@ -50,6 +62,7 @@ class Ui_MainWindow(object):
         self.text_roomsnum.setObjectName("text_roomsnum")
         self.formLayout_4.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.text_roomsnum)
         self.in_roomsnum = QtWidgets.QSpinBox(self.centralwidget)
+        self.in_roomsnum.setRange(2,6)
         self.in_roomsnum.setObjectName("in_roomsnum")
         self.formLayout_4.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.in_roomsnum)
         self.formLayout_5 = QtWidgets.QFormLayout()
@@ -105,7 +118,7 @@ class Ui_MainWindow(object):
         self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.text_dateout)
         self.in_dateout = QtWidgets.QDateEdit(self.centralwidget)
         self.in_dateout.setObjectName("in_dateout")
-        self.in_dateout.setDate(datetime.date.today())
+        self.in_dateout.setMinimumDate(self.in_datein.date())
         self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.in_dateout)
         self.gridLayout.addLayout(self.formLayout_4, 0, 0, 1, 1)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
@@ -114,22 +127,23 @@ class Ui_MainWindow(object):
         self.BtnSearch.setObjectName("BtnSearch")
         self.horizontalLayout_4.addWidget(self.BtnSearch)
         self.gridLayout.addLayout(self.horizontalLayout_4, 2, 0, 1, 1)
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.BtnReservate = QtWidgets.QPushButton(self.centralwidget)
-        self.BtnReservate.setObjectName("BtnReservate")
-        self.horizontalLayout_2.addWidget(self.BtnReservate)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 2, 1, 1, 1)
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.ListRooms = QtWidgets.QListWidget(self.centralwidget)
-        self.ListRooms.setObjectName("ListRooms")
-        self.horizontalLayout.addWidget(self.ListRooms)
-        self.gridLayout.addLayout(self.horizontalLayout, 0, 1, 1, 1)
         self.calendar = QtWidgets.QCalendarWidget(self.centralwidget)
         self.calendar.setObjectName("calendar")
-        self.calendar.setSelectionMode(QtWidgets.QCalendarWidget.SelectionMode.NoSelection)
+        self.calendar.setSelectionMode(QtWidgets.QCalendarWidget.NoSelection)
         self.gridLayout.addWidget(self.calendar, 1, 0, 1, 1)
+
+        self.movie = QMovie(self.scriptDir + os.path.sep + 'vids' + os.path.sep + '0.gif')
+        self.movie_screen = QtWidgets.QLabel()
+
+        self.movie_screen.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+
+        self.gridLayout.addWidget(self.movie_screen, 1, 1, 1, 1)
+
+        self.movie.setCacheMode(QMovie.CacheAll)
+        self.movie.setSpeed(100)
+        self.movie_screen.setMovie(self.movie)
+        self.movie.start()
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -138,20 +152,16 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        scriptDir = os.path.dirname(os.path.realpath(__file__))
-        self.setWindowIcon(QtGui.QIcon(scriptDir + os.path.sep + 'icon.png'))
+        self.setWindowIcon(QtGui.QIcon(self.scriptDir + os.path.sep + 'icon.png'))
 
-        self.rooms_filename = scriptDir + os.path.sep + 'rooms.csv'
-        self.clients_filename = scriptDir + os.path.sep + 'clients.csv'
+        self.rooms_filename = self.scriptDir + os.path.sep + 'rooms.csv'
+        self.clients_filename = self.scriptDir + os.path.sep + 'clients.csv'
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Hata reservation"))
-        self.roomprops.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        #self.ListRooms.setToolTip(_translate("MainWindow", "<html><head/><body><p>уцйкй</p></body></html>"))
+        self.BtnReservate.setText(_translate("MainWindow", "Забронировать"))
         self.text_name.setText(_translate("MainWindow", "Имя*"))
         self.text_lastname.setText(_translate("MainWindow", "Фамилия*"))
         self.text_middlename.setText(_translate("MainWindow", "Отчество"))
@@ -166,4 +176,4 @@ class Ui_MainWindow(object):
         self.text_hasbreakfast.setText(_translate("MainWindow", "Завтрак"))
         self.text_dateout.setText(_translate("MainWindow", "Дата выезда"))
         self.BtnSearch.setText(_translate("MainWindow", "Найти"))
-        self.BtnReservate.setText(_translate("MainWindow", "Забронировать"))
+        self.movie_screen.setToolTip(_translate("MainWindow", "<html><head/><body><p>affaa</p></body></html>"))

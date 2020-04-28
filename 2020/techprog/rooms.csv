@@ -1,3 +1,6 @@
-1|2|3
-a|b|c
-67|gh|b8
+vidId|clientId|rooms|hasTv|hasWifi|hasSafe|hasPets|smoker|hasBreakfast
+0|-1|3|False|False|False|False|False|False
+1|-1|2|False|True|True|False|True|True
+2|-1|4|False|True|True|True|True|True
+3|0|2|True|True|False|True|True|True
+4|-1|6|True|True|True|False|False|True
