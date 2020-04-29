@@ -3,7 +3,7 @@ import DataBase
 import Client as cl
 import pandas as pd
 import datetime as dt
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 from PyQt5.QtCore import QDate
 from PyQt5.QtGui import QMovie, QColor, QPalette, QTextCharFormat
 import sys
@@ -75,7 +75,7 @@ class App(QMainWindow, Hata_ui.Ui_MainWindow):
                 self.ListItems[id].setBackground(QColor('#beaed4'))
     
     def reservate(self):
-        msg = QtWidgets.QMessageBox()
+        msg = QMessageBox()
         msg.setWindowTitle('Hata')
         if not ((self.in_name.text() == '') or (self.in_lastname.text() == '') or (self.in_mobilenum.text() == '')) and self.db.props['clientId'][self.ListRooms.currentRow()] != -1:
             current_client = cl.Client(id=len(self.clientdb),
@@ -88,7 +88,7 @@ class App(QMainWindow, Hata_ui.Ui_MainWindow):
             self.clientdb.append(current_client)
             self.db.props['clientId'][self.ListRooms.currentRow()] = current_client.id
             msg.setText('Забронировано!')
-        else: msg.setText("Не забронировано!\n* - обязательные данные")   
+        else: msg.setText("Не забронировано!")
         msg.exec_()                        
 
     def _roomProps(self):
